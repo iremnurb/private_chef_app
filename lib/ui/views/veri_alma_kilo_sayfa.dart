@@ -1,4 +1,5 @@
 import 'package:diyet/ui/views/veri_alma_gun_sayfa.dart';
+import 'package:diyet/ui/views/veri_alma_hareket_sayfa.dart';
 import 'package:flutter/material.dart';
 
 class VeriAlmaKiloSayfa extends StatefulWidget {
@@ -121,7 +122,7 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => VeriAlmaGunSayfa(),
+                  builder: (context) => VeriAlmaHareketSayfa(),
                 ),
               );
             },

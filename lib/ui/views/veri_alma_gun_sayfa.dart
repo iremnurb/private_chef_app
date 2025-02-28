@@ -1,4 +1,4 @@
-import 'package:diyet/ui/views/veri_alma_hareket_sayfa.dart';
+import 'package:diyet/ui/views/veri_alma_timing_sayfa.dart';
 import 'package:flutter/material.dart';
 
 class VeriAlmaGunSayfa extends StatefulWidget {
@@ -7,7 +7,7 @@ class VeriAlmaGunSayfa extends StatefulWidget {
 }
 
 class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
-  int days = 0; // Gün sayısı 0'dan başlıyor.
+  int meals = 2; // Öğün sayısı 2'den başlıyor.
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +29,9 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
                   height: 50,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.black, width: 5), // Çerçeve rengi
+                    border: Border.all(color: Colors.black, width: 5),
                   ),
-                  child: const Icon(Icons.arrow_back, color: Colors.black, size: 32,weight: 5,),
+                  child: const Icon(Icons.arrow_back, color: Colors.black, size: 32, weight: 5),
                 ),
               ),
             ),
@@ -46,8 +46,8 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
               style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
               children: [
                 TextSpan(
-                  text: "target day",
-                  style: TextStyle(color: Color(0xFFD0A890)), // Açık kahverengi tonu
+                  text: "meal number",
+                  style: TextStyle(color: Color(0xFFD0A890)),
                 ),
               ],
             ),
@@ -55,24 +55,23 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
 
           const SizedBox(height: 70),
 
-          /// **Gün Sayısı Seçici**
+          /// **Öğün Sayısı Seçici**
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              /// Gün Sayısı
+              /// Öğün Sayısı
               Container(
                 width: MediaQuery.of(context).size.width * 0.4,
                 height: MediaQuery.of(context).size.width * 0.3,
                 alignment: Alignment.center,
-                padding:  EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  "$days",
+                  "$meals",
                   style: const TextStyle(fontSize: 44, fontWeight: FontWeight.bold, color: Colors.black87),
-
                 ),
               ),
 
@@ -83,13 +82,13 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
                 children: [
                   _buildControlButton("+", () {
                     setState(() {
-                      days++; // Gün sayısını artır
+                      if (meals < 5) meals++; // Öğün sayısı en fazla 5 olabilir
                     });
                   }),
                   const SizedBox(height: 10),
                   _buildControlButton("-", () {
                     setState(() {
-                      if (days > 0) days--; // Gün sayısını azalt, 0'dan küçük olamaz
+                      if (meals > 2) meals--; // Öğün sayısı en az 2 olabilir
                     });
                   }),
                 ],
@@ -105,7 +104,7 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => VeriAlmaHareketSayfa(),
+                  builder: (context) => VeriAlmaTimingSayfa(mealCount: meals),
                 ),
               );
             },
@@ -113,7 +112,7 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
               width: MediaQuery.of(context).size.width * 0.8,
               height: 55,
               decoration: BoxDecoration(
-                color: const Color(0xFF8A9B0F), // Yeşil tonu
+                color: const Color(0xFF8A9B0F),
                 borderRadius: BorderRadius.circular(12),
               ),
               alignment: Alignment.center,
@@ -138,8 +137,8 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
         width: MediaQuery.of(context).size.width * 0.16,
         height: MediaQuery.of(context).size.width * 0.12,
         decoration: BoxDecoration(
-          color: const Color(0xFF0C2D48), // Koyu mavi arka plan
-            borderRadius: BorderRadius.circular(16)
+          color: const Color(0xFF0C2D48),
+          borderRadius: BorderRadius.circular(16),
         ),
         alignment: Alignment.center,
         child: Text(

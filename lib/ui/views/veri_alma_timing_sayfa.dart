@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 
 class VeriAlmaTimingSayfa extends StatefulWidget {
+  final int mealCount;
+
+  VeriAlmaTimingSayfa({required this.mealCount});
+
   @override
   _VeriAlmaTimingSayfaState createState() => _VeriAlmaTimingSayfaState();
 }
 
 class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
-  TimeOfDay? breakfastTime;
-  TimeOfDay? lunchTime;
-  TimeOfDay? dinnerTime;
+  List<TimeOfDay?> mealTimes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    mealTimes = List.filled(widget.mealCount, null);
+  }
 
   /// **Saat Seçici Fonksiyonu**
-  Future<void> _selectTime(BuildContext context, String mealType) async {
+  Future<void> _selectTime(BuildContext context, int index) async {
     TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -49,13 +57,7 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
 
     if (picked != null) {
       setState(() {
-        if (mealType == "Breakfast") {
-          breakfastTime = picked;
-        } else if (mealType == "Lunch") {
-          lunchTime = picked;
-        } else if (mealType == "Dinner") {
-          dinnerTime = picked;
-        }
+        mealTimes[index] = picked;
       });
     }
   }
@@ -71,21 +73,19 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           content: const Text("Are you sure you want to create your diet list?",
-            style:TextStyle(fontSize: 18),),
+            style: TextStyle(fontSize: 18),),
           actions: [
             /// **No Butonu**
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Dialog'u kapat
+                Navigator.pop(context);
               },
               child: const Text("NO", style: TextStyle(color: Color(0xFF8A9B0F))),
             ),
-
             /// **Yes Butonu**
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Dialog'u kapat
-                // TODO: Diyet listesini oluştur ve yönlendir
+                Navigator.pop(context);
               },
               child: const Text("YES", style: TextStyle(color: Color(0xFF8A9B0F), fontWeight: FontWeight.bold)),
             ),
@@ -115,7 +115,7 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
                   height: 50,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.black, width: 5), // Çerçeve rengi
+                    border: Border.all(color: Colors.black, width: 5),
                   ),
                   child: const Icon(Icons.arrow_back, color: Colors.black, size: 32, weight: 5),
                 ),
@@ -133,7 +133,7 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
               children: [
                 TextSpan(
                   text: "meal times",
-                  style: TextStyle(color: Color(0xFFD0A890)), // Açık kahverengi tonu
+                  style: TextStyle(color: Color(0xFFD0A890)),
                 ),
               ],
             ),
@@ -142,22 +142,24 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
           const SizedBox(height: 50),
 
           /// **Saat Seçenekleri**
-          _buildMealTimeCard("Breakfast", breakfastTime),
-          _buildMealTimeCard("Lunch", lunchTime),
-          _buildMealTimeCard("Dinner", dinnerTime),
+          Column(
+            children: List.generate(widget.mealCount, (index) {
+              return _buildMealTimeCard("Meal ${index + 1}", index);
+            }),
+          ),
 
           const Spacer(),
 
           /// **Create Butonu**
           GestureDetector(
             onTap: () {
-              _showConfirmationDialog(); // Onay penceresini aç
+              _showConfirmationDialog();
             },
             child: Container(
               width: MediaQuery.of(context).size.width * 0.8,
               height: 55,
               decoration: BoxDecoration(
-                color: const Color(0xFF8A9B0F), // Yeşil tonu
+                color: const Color(0xFF8A9B0F),
                 borderRadius: BorderRadius.circular(12),
               ),
               alignment: Alignment.center,
@@ -175,9 +177,9 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
   }
 
   /// **Yemek Zamanı Seçenek Kartı**
-  Widget _buildMealTimeCard(String mealType, TimeOfDay? selectedTime) {
+  Widget _buildMealTimeCard(String mealType, int index) {
     return GestureDetector(
-      onTap: () => _selectTime(context, mealType), // Zaman seçici açılır
+      onTap: () => _selectTime(context, index),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
@@ -200,13 +202,13 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
 
             /// **Seçili Saat**
             Text(
-              selectedTime != null
-                  ? "${selectedTime.hour}:${selectedTime.minute.toString().padLeft(2, '0')}" // Saat biçimi HH:mm
+              mealTimes[index] != null
+                  ? "${mealTimes[index]!.hour}:${mealTimes[index]!.minute.toString().padLeft(2, '0')}"
                   : "X:X",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: selectedTime != null ? Colors.black : Colors.grey.shade500,
+                color: mealTimes[index] != null ? Colors.black : Colors.grey.shade500,
               ),
             ),
           ],
