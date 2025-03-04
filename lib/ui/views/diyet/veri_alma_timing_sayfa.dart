@@ -1,4 +1,11 @@
+import 'package:diyet/ui/views/diyet/diyet_listem_sayfa.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../cubit/diyet_listem_sayfa_cubit.dart';
+import '../../cubit/veri_alma_gun_sayfa_cubit.dart';
+import '../../cubit/veri_alma_hareket_sayfa_cubit.dart';
+import '../../cubit/veri_alma_kilo_sayfa_cubit.dart';
 
 class VeriAlmaTimingSayfa extends StatefulWidget {
   final int mealCount;
@@ -85,7 +92,9 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
             /// **Yes Butonu**
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+
+
+
               },
               child: const Text("YES", style: TextStyle(color: Color(0xFF8A9B0F), fontWeight: FontWeight.bold)),
             ),

@@ -1,4 +1,4 @@
-import 'package:diyet/ui/views/veri_alma_kilo_sayfa.dart';
+import 'package:diyet/ui/views/diyet/veri_alma_kilo_sayfa.dart';
 import 'package:flutter/material.dart';
 
 import 'package:diyet/ui/views/ana_sayfa.dart';

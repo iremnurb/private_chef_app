@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:diyet/ui/cubit/ana_sayfa_cubit.dart';
+import 'package:diyet/ui/cubit/veri_alma_kilo_sayfa_cubit.dart';
+import 'package:diyet/ui/cubit/veri_alma_gun_sayfa_cubit.dart';
+import 'package:diyet/ui/cubit/veri_alma_hareket_sayfa_cubit.dart';
+import 'package:diyet/ui/cubit/veri_alma_timig_sayfa_cubit.dart';
+import 'package:diyet/ui/cubit/diyet_listem_sayfa_cubit.dart';
+import 'package:diyet/data/repo/repository.dart';
 
 import 'package:diyet/ui/views/bottom_navigation.dart';
 
@@ -19,6 +25,11 @@ class MyApp extends StatelessWidget {
       //kullandığımız cubitleri altta ekliyoruz.
       providers: [
         BlocProvider(create: (context) => AnaSayfaCubit()),
+       // BlocProvider(create: (context) => DiyetListemSayfaCubit(Repository())),
+        BlocProvider(create: (context) => VeriAlmaKiloSayfaCubit()),
+        BlocProvider(create: (context) => VeriAlmaGunSayfaCubit()),
+        BlocProvider(create: (context) => VeriAlmaHareketSayfaCubit()),
+        BlocProvider(create: (context) => VeriAlmaTimigSayfaCubit()),
 
 
       ],
