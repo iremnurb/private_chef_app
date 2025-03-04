@@ -51,5 +51,4 @@ class DiyetListemSayfaCubit extends Cubit<DietState> {
     emit(DietState(days: days, dailyCalories: (tdee - 700).round(), loading: false));
   }
 
-}
-*/
+}*/
