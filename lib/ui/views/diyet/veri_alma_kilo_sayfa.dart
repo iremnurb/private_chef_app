@@ -21,7 +21,7 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
         children: [
           const SizedBox(height: 40), // Üst boşluk ekleyerek ikonun ekranın tepesine yapışmasını engelliyoruz.
 
-          /// **Geri Butonu**
+          //Geri Butonu
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
@@ -43,7 +43,7 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
 
           const SizedBox(height: 80),
 
-          /// **Başlık**
+          //Başlık
           RichText(
             text: const TextSpan(
               text: "Your ",

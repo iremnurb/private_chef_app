@@ -31,6 +31,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
+  google_sign_in:
+  sign_in_with_apple:
+  intl: ^0.18.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -62,6 +65,32 @@ flutter:
    - assets/images/muz.png
    - assets/images/halter.png
    - assets/images/kupa.png
+   - assets/images/additivitesandpreservatives.png
+   - assets/images/bevereges.png
+   - assets/images/breadandbakedgoods.png
+   - assets/images/cannedandjarred.png
+   - assets/images/dairyandeggs.png
+   - assets/images/fruits.png
+   - assets/images/grainandpasta.png
+   - assets/images/herbsandspices.png
+   - assets/images/meatandpoultry.png
+   - assets/images/nutsandseeds.png
+   - assets/images/oilsandsauces.png
+   - assets/images/organmeatsandoffal.png
+   - assets/images/seafood.png
+   - assets/images/sweetsandsnacks.png
+   - assets/images/vegetables.png
+   - assets/images/alarm.png
+   - assets/images/refrigerator.png
+   - assets/images/Rectangle.png
+   - assets/images/Clock.png
+   - assets/images/salad.png
+   - assets/images/onboarding.png
+   - assets/images/google.png
+   - assets/images/apple.png
+   - assets/images/login_ust.png
+   - assets/images/erkek.png
+   - assets/images/kadın.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

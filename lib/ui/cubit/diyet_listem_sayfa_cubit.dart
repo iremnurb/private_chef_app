@@ -1,9 +1,9 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+/*import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:diyet/data/entity/kisi_bilgisi.dart';
 import 'package:diyet/data/repo/repository.dart';
 import 'package:diyet/ui/views/diyet/veri_alma_kilo_sayfa.dart';
 
-/*class DietState {
+class DietState {
   final int days;
   final int dailyCalories;
   final bool loading;

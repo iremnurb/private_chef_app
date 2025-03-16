@@ -1,133 +1,189 @@
-import 'package:diyet/ui/views/diyet/veri_alma_gun_sayfa.dart';
 import 'package:diyet/ui/views/diyet/veri_alma_kilo_sayfa.dart';
+import 'package:diyet/ui/views/profil_sayfa.dart';
 import 'package:flutter/material.dart';
+import 'package:diyet/ui/views/recipe/recipe_mode_ana_sayfa.dart';
+import 'favori_sayfa.dart';
 
-class AnaSayfa extends StatelessWidget {
+class AnaSayfa extends StatefulWidget {
+  const AnaSayfa({super.key});
+
+  @override
+  State<AnaSayfa> createState() => _AnaSayfaState();
+}
+
+class _AnaSayfaState extends State<AnaSayfa> {
+  int _currentIndex = 1; // Ana Sayfa varsayılan
+
+  final List<Widget> _pages = [
+    const FavoriSayfa(),
+    const AnaSayfaIcerik(),
+    const ProfilSayfa(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width; // Ekran genişliği
-    double buttonWidth = screenWidth * 0.6; // Buton genişliği (Ekranın %60'ı)
-
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
+      body: SafeArea(child: _pages[_currentIndex]),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
         backgroundColor: Colors.white,
-        elevation: 0,
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Hello İrem !",
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.account_circle, size: 40, color: Colors.black),
-                onPressed: () {
-                  // TODO: Profil sayfasına git
-                },
-              ),
-            ],
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: "Favoriler",
           ),
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Ana Sayfa",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profil",
+          ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0), // Kenarlara tam dayalı
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20), // Yazılar hizalı olsun diye
-              child: Text(
-                "Choose a mode to start your journey!",
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-            ),
-            const SizedBox(height: 5),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: RichText(
-                text: const TextSpan(
-                  text: "Track your ",
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                  children: [
-                    TextSpan(
-                      text: "diet",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFABD904)),
-                    ),
-                    TextSpan(
-                      text: " or explore delicious ",
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    TextSpan(
-                      text: "recipes.",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFF2B33D)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
+    );
+  }
+}
 
-            /// **Mode Seçenekleri (Tam Kenara Dayalı)**
-            Expanded(
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 0, // **Ekranın soluna tamamen dayalı**
-                    top: 60,
-                    child: _buildModeButton(
-                      color: const Color(0xFFF2B33D),
-                      text: "Recipe Mode",
-                      width: buttonWidth,
-                      height: 200,
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
-                      ),
-                      onTap: () {
-                        // TODO: Tarif sayfasına git
-                      },
-                    ),
+class AnaSayfaIcerik extends StatelessWidget {
+  const AnaSayfaIcerik({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double buttonWidth = screenWidth * 0.6;
+
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Hello İrem !",
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-                  Positioned(
-                    right: 0, // **Ekranın sağına tamamen dayalı**
-                    top: 180, // Hafif aşağı kaydırılmış
-                    child: _buildModeButton(
-                      color: const Color(0xFFABD904),
-                      text: "Diet Mode",
-                      width: buttonWidth,
-                      height: 200,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        bottomLeft: Radius.circular(30),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => VeriAlmaKiloSayfa(),
-                          ),
-                        );
-                      },
-                    ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.account_circle,
+                      size: 40, color: Colors.black),
+                  onPressed: () {
+                    (context.findAncestorStateOfType<_AnaSayfaState>())
+                        ?.setState(() {
+                      (context.findAncestorStateOfType<_AnaSayfaState>())
+                          ?._currentIndex = 2;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              "Choose a mode to start your journey!",
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+          ),
+          const SizedBox(height: 5),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: RichText(
+              text: const TextSpan(
+                text: "        Track your ",
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+                children: [
+                  TextSpan(
+                    text: "diet",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Color(0xFFABD904)),
+                  ),
+                  TextSpan(
+                    text: " or explore delicious ",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  TextSpan(
+                    text: "recipes.",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Color(0xFFF2B33D)),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 30),
+          SizedBox(
+            height: 400,
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 0,
+                  top: 60,
+                  child: _buildModeButton(
+                    color: const Color(0xFFF2B33D),
+                    text: "Recipe Mode",
+                    width: buttonWidth,
+                    height: 200,
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  RecipeModeAnaSayfa(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  top: 180,
+                  child: _buildModeButton(
+                    color: const Color(0xFFABD904),
+                    text: "Diet Mode",
+                    width: buttonWidth,
+                    height: 200,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      bottomLeft: Radius.circular(30),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  VeriAlmaKiloSayfa(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  /// **Mode Butonu Tasarımı**
   Widget _buildModeButton({
     required Color color,
     required String text,
@@ -148,7 +204,8 @@ class AnaSayfa extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           text,
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+          style: const TextStyle(
+              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
     );
