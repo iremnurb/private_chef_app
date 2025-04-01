@@ -1,17 +1,19 @@
-import 'package:diyet/ui/views/login/boy.dart';
+import 'package:diyet/ui/views/login/height.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import '../../cubit/sign_up_cubit.dart';
 
-class Yas extends StatefulWidget {
-  const Yas({super.key});
+class Age extends StatefulWidget {
+  const Age({super.key});
 
   @override
-  _YasState createState() => _YasState();
+  _AgeState createState() => _AgeState();
 }
 
-class _YasState extends State<Yas> {
-  DateTime? selectedDate; // Seçilen doğum tarihi
-  int? age; // Kullanıcının yaşı
+class _AgeState extends State<Age> {
+  DateTime? selectedDate;
+  int? age;
 
   // Tarih seçme işlemi
   Future<void> _selectDate(BuildContext context) async {
@@ -26,7 +28,7 @@ class _YasState extends State<Yas> {
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            primaryColor: const Color(0xFF7C8C03), // Takvim başlık rengi
+            primaryColor: const Color(0xFF7C8C03),
             buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             colorScheme: const ColorScheme.light(primary: Color(0xFF7C8C03)).copyWith(secondary: Colors.green),
           ),
@@ -64,27 +66,27 @@ class _YasState extends State<Yas> {
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.black, width: 3),
                     ),
-                    child: const Icon(Icons.arrow_back, color: Colors.black, size: 24, weight: 3),
+                    child: const Icon(Icons.arrow_back, color: Colors.black, size: 24),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 60),
-             Align(
-               alignment: Alignment.center,
-               child: RichText(
-                  text: TextSpan(
-                    text: "Your ",
-                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
-                    children: [
-                      TextSpan(
-                        text: "date of birth",
-                        style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
-                      ),
-                    ],
+            Align(
+              alignment: Alignment.center,
+              child: RichText(
+                text: const TextSpan(
+                  text: "Your ",
+                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                  children: [
+                    TextSpan(
+                      text: "date of birth",
+                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
+                    ),
+                  ],
                 ),
-                           ),
-             ),
+              ),
+            ),
 
             const SizedBox(height: 80),
 
@@ -114,7 +116,7 @@ class _YasState extends State<Yas> {
                 child: Container(
                   width: 310,
                   height: 80,
-                  padding:  EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   decoration: BoxDecoration(
                     color: Colors.red[100],
                     borderRadius: BorderRadius.circular(12),
@@ -149,10 +151,14 @@ class _YasState extends State<Yas> {
                 minimumSize: const Size(double.infinity, 50),
               ),
               onPressed: selectedDate == null ? null : () {
+                // Kullanıcı yaşını kaydet
+                context.read<SignUpCubit>().setAge(age!);
+
+                // Sonraki sayfaya geç
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Boy() ,
+                    builder: (context) => const Height(),
                   ),
                 );
                 print("Doğum Tarihi: $selectedDate");

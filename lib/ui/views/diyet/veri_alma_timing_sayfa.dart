@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:diyet/ui/views/ana_sayfa.dart';
 import 'package:flutter/material.dart';
+
+import '../home/ana_sayfa.dart';
 
 class VeriAlmaTimingSayfa extends StatefulWidget {
   final int mealCount;

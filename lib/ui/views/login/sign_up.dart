@@ -1,40 +1,41 @@
-import 'package:diyet/ui/views/login/cinsiyet.dart';
+import 'package:diyet/ui/views/login/gender.dart';
 import 'package:diyet/ui/views/login/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubit/sign_up_cubit.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController usernameController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             // Üst Kısım (Arka plan resmi ve başlık)
             Container(
-              height: 200, // Yükseklik artırıldı
+              height: 200,
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("assets/images/login_ust.png"), // Arka plan resmi
+                  image: AssetImage("assets/images/login_ust.png"),
                   fit: BoxFit.cover,
                 ),
               ),
               alignment: Alignment.bottomLeft,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 75),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
+              child: const Text(
+                "Sign Up",
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ),
 
@@ -46,70 +47,9 @@ class SignUp extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Username
-                   Text(
-                    "Username",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: "Enter your username",
-                      hintStyle: TextStyle(color: Colors.grey[500]), // Açık gri renk
-                      border: InputBorder.none,
-                    ),
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  const Divider(color: Colors.black, thickness: 1),
-                  const SizedBox(height: 8),
-
-                  // Email
-                   Text(
-                    "Email",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: "Enter your email",
-                      hintStyle: TextStyle(color: Colors.grey[500]),
-                      border: InputBorder.none,
-                    ),
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  const Divider(color: Colors.black, thickness: 1),
-                  const SizedBox(height: 8),
-
-                  // Password
-                   Text(
-                    "Password",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: "Enter your password",
-                      hintStyle: TextStyle(color: Colors.grey[500]),
-                      border: InputBorder.none,
-                      suffixIcon: Icon(Icons.visibility_off, color: Colors.grey[600]),
-                    ),
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  const Divider(color: Colors.black, thickness: 1),
-
+                  buildTextField("Username", "Enter your username", usernameController),
+                  buildTextField("Email", "Enter your email", emailController),
+                  buildTextField("Password", "Enter your password", passwordController, obscure: true),
                   const SizedBox(height: 14),
 
                   // Terms and Privacy
@@ -141,7 +81,7 @@ class SignUp extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF7C8C03), // Yeşilimsi buton rengi
+                  backgroundColor: const Color(0xFF7C8C03),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -149,10 +89,16 @@ class SignUp extends StatelessWidget {
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 onPressed: () {
+                  context.read<SignUpCubit>().setUsername(usernameController.text);
+                  context.read<SignUpCubit>().setEmail(emailController.text);
+                  context.read<SignUpCubit>().setPassword(passwordController.text);
+
+
+                  // Gender sayfasına yönlendir
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Cinsiyet() ,
+                      builder: (context) => const Gender(),
                     ),
                   );
                 },
@@ -171,28 +117,45 @@ class SignUp extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Login() ,
+                    builder: (context) => const Login(),
                   ),
                 );
               },
-              child: RichText(
-                text: const TextSpan(
-                  text: "Already have an account? ",
-                  style: TextStyle(color: Colors.black, fontSize: 14),
-                  children: [
-                    TextSpan(
-                      text: "Login",
-                      style: TextStyle(
-                        color: Color(0xFF7C8C03), // Goldumsu yeşil renk
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+              child: const Text(
+                "Already have an account? Login",
+                style: TextStyle(color: Color(0xFF7C8C03), fontWeight: FontWeight.bold),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Ortak TextField Yapısı
+  Widget buildTextField(String label, String hint, TextEditingController controller, {bool obscure = false}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextField(
+            controller: controller,
+            obscureText: obscure,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: const TextStyle(color: Colors.grey),
+              border: const UnderlineInputBorder(),
+            ),
+          ),
+        ],
       ),
     );
   }

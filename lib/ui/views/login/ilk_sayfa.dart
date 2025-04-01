@@ -49,7 +49,7 @@ class IlkSayfa extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SignUp(),
+                        builder: (context) => Login(),
                       ),
                     );                  },
                   child: const Text("Sign up with email",

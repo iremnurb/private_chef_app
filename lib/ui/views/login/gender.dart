@@ -1,15 +1,17 @@
-import 'package:diyet/ui/views/login/yas.dart';
+import 'package:diyet/ui/views/login/age.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubit/sign_up_cubit.dart';
 
-class Cinsiyet extends StatefulWidget {
-  const Cinsiyet({super.key});
+class Gender extends StatefulWidget {
+  const Gender({super.key});
 
   @override
-  _CinsiyetState createState() => _CinsiyetState();
+  _GenderState createState() => _GenderState();
 }
 
-class _CinsiyetState extends State<Cinsiyet> {
-  String? selectedGender; // Seçili cinsiyeti takip ediyor
+class _GenderState extends State<Gender> {
+  String? selectedGender;
 
   @override
   Widget build(BuildContext context) {
@@ -32,23 +34,23 @@ class _CinsiyetState extends State<Cinsiyet> {
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.black, width: 3),
                     ),
-                    child: const Icon(Icons.arrow_back, color: Colors.black, size: 24, weight: 3),
+                    child: const Icon(Icons.arrow_back, color: Colors.black, size: 24),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 70),
             // Başlık
-             RichText(
-                text: TextSpan(
-                  text: "  What is your ",
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
-                  children: [
-                    TextSpan(
-                      text: "gender?",
-                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)), // Bejimsi renk
-                    ),
-                  ],
+            RichText(
+              text: TextSpan(
+                text: "  What is your ",
+                style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                children: [
+                  TextSpan(
+                    text: "gender?",
+                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
+                  ),
+                ],
               ),
             ),
 
@@ -69,18 +71,22 @@ class _CinsiyetState extends State<Cinsiyet> {
             // Next Butonu
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF7C8C03), // Yeşilimsi buton rengi
+                backgroundColor: const Color(0xFF7C8C03),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                minimumSize: const Size(double.infinity, 50), // Buton tam genişlikte
+                minimumSize: const Size(double.infinity, 50),
               ),
               onPressed: selectedGender == null ? null : () {
+                // Cinsiyeti kaydet
+                context.read<SignUpCubit>().setGender(selectedGender!);
+
+                // Sonraki sayfaya geç
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Yas() ,
+                    builder: (context) => const Age(),
                   ),
                 );
               },
@@ -110,7 +116,7 @@ class _CinsiyetState extends State<Cinsiyet> {
         width: 140,
         height: 160,
         decoration: BoxDecoration(
-          color: isSelected ? Colors.grey[300] : Colors.grey[100], // Seçildiğinde daha koyu olacak
+          color: isSelected ? Colors.grey[300] : Colors.grey[100],
           borderRadius: BorderRadius.circular(12),
           border: isSelected ? Border.all(color: const Color(0xFF7C8C03), width: 2) : null,
         ),
@@ -121,7 +127,7 @@ class _CinsiyetState extends State<Cinsiyet> {
             const SizedBox(height: 10),
             Text(
               gender,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,

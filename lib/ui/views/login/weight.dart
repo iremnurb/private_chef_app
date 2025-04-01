@@ -1,16 +1,19 @@
+import 'package:diyet/ui/views/bottom_navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:diyet/ui/views/ana_sayfa.dart';
+import '../home/ana_sayfa.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubit/sign_up_cubit.dart';
 
-class Kilo extends StatefulWidget {
-  const Kilo({super.key});
+class Weight extends StatefulWidget {
+  const Weight({super.key});
 
   @override
-  _KiloState createState() => _KiloState();
+  _WeightState createState() => _WeightState();
 }
 
-class _KiloState extends State<Kilo> {
-  double selectedWeight = 72; // Varsayılan kilo
-  bool isKg = true; // KG - LB seçimi
+class _WeightState extends State<Weight> {
+  double selectedWeight = 72;
+  bool isKg = true;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,6 @@ class _KiloState extends State<Kilo> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Align(
               alignment: Alignment.topLeft,
               child: Padding(
@@ -34,17 +36,18 @@ class _KiloState extends State<Kilo> {
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.black, width: 3),
                     ),
-                    child: const Icon(Icons.arrow_back, color: Colors.black, size: 24, weight: 3),
+                    child: const Icon(Icons.arrow_back, color: Colors.black, size: 24),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 40),
+
             // Başlık
-             Align(
-               alignment: Alignment.center,
+            Align(
+              alignment: Alignment.center,
               child: RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   text: "Your ",
                   style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
                   children: [
@@ -104,7 +107,7 @@ class _KiloState extends State<Kilo> {
                 showValueIndicator: ShowValueIndicator.always,
               ),
               child: Slider(
-                min: isKg ? 30 : 66, // 30 kg - 150 kg || 66 lb - 330 lb
+                min: isKg ? 30 : 66,
                 max: isKg ? 150 : 330,
                 divisions: 120,
                 value: selectedWeight,
@@ -129,24 +132,28 @@ class _KiloState extends State<Kilo> {
                 minimumSize: const Size(double.infinity, 50),
               ),
               onPressed: () {
-                // Kayıt işlemi tamamlandı mesajı
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Kayıt oluşturuldu"),
-                    duration: Duration(seconds: 2),
-                  ),
+                // Kullanıcının kilosunu kaydet
+                context.read<SignUpCubit>().setWeight(selectedWeight.toInt());
+
+                // API'ye kayıt isteği gönder
+                context.read<SignUpCubit>().signUp();
+
+                // Ana Sayfaya Yönlendirme
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation()),
                 );
 
-                // 2 saniye sonra AnaSayfa'ya yönlendir
-                Future.delayed(const Duration(seconds: 2), () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => AnaSayfa()),
-                  );
-                });
+                // Başarılı mesaj
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Congrats! You are registered"),
+                    duration: Duration(seconds: 3),
+                  ),
+                );
               },
               child: const Text(
-                "Kaydol",
+                "Finish",
                 style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -170,7 +177,7 @@ class _KiloState extends State<Kilo> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xFF0C2D48) : Colors.transparent,
+          color: isSelected ? const Color(0xFF0C2D48) : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
@@ -185,4 +192,3 @@ class _KiloState extends State<Kilo> {
     );
   }
 }
-

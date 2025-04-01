@@ -1,8 +1,20 @@
 import 'package:diyet/ui/views/login/sign_up.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubit/login_cubit.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
+  String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +24,11 @@ class Login extends StatelessWidget {
           children: [
             // Üst kısım (Arka plan resmi)
             Container(
-              height: 200, // Üstteki fotoğrafın yüksekliği
+              height: 200,
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("assets/images/login_ust.png"), // Arka plan resmi
+                  image: AssetImage("assets/images/login_ust.png"),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -35,7 +47,7 @@ class Login extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    "enter your emails and password",
+                    "Enter your email and password",
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey,
@@ -63,12 +75,15 @@ class Login extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       hintText: "Enter your email",
                       hintStyle: TextStyle(color: Colors.grey[500]),
                       border: InputBorder.none,
+                      errorText: errorMessage,
                     ),
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),
+                    keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const Divider(color: Colors.black, thickness: 1),
                   const SizedBox(height: 16),
@@ -84,12 +99,23 @@ class Login extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   TextField(
-                    obscureText: true,
+                    controller: passwordController,
+                    obscureText: !_isPasswordVisible,
                     decoration: InputDecoration(
                       hintText: "Enter your password",
                       hintStyle: TextStyle(color: Colors.grey[500]),
                       border: InputBorder.none,
-                      suffixIcon: Icon(Icons.visibility_off, color: Colors.grey),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
                     ),
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
@@ -102,7 +128,7 @@ class Login extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {},
-                      child: Text(
+                      child: const Text(
                         "Forgot Password?",
                         style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
@@ -119,21 +145,49 @@ class Login extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF7C8C03), // Yeşilimsi buton rengi
+                  backgroundColor: const Color(0xFF7C8C03),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  minimumSize: const Size(double.infinity, 50), // Butonun tam genişlik kaplaması
+                  minimumSize: const Size(double.infinity, 50),
                 ),
                 onPressed: () {
-                  // Log in işlemi buraya gelecek
+                  if (emailController.text.isEmpty || !emailController.text.contains('@')) {
+                    setState(() {
+                      errorMessage = "Please enter a valid email address";
+                    });
+                    return;
+                  }
+
+                  context.read<LoginCubit>().login(
+                    emailController.text,
+                    passwordController.text,
+                  );
                 },
                 child: const Text(
                   "Log In",
                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Hata Mesajı
+            BlocBuilder<LoginCubit, String>(
+              builder: (context, state) {
+                if (state.isNotEmpty && state != "Login successful!") {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      state,
+                      style: const TextStyle(color: Colors.red, fontSize: 20,fontWeight: FontWeight.bold),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
             ),
 
             const SizedBox(height: 10),
@@ -143,9 +197,7 @@ class Login extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => SignUp() ,
-                  ),
+                  MaterialPageRoute(builder: (context) => const SignUp()),
                 );
               },
               child: RichText(
@@ -156,7 +208,7 @@ class Login extends StatelessWidget {
                     TextSpan(
                       text: "Sign up",
                       style: TextStyle(
-                        color: Color(0xFF7C8C03), // Goldumsu yeşil renk
+                        color: Color(0xFF7C8C03),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

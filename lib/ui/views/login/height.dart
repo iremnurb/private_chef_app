@@ -1,15 +1,17 @@
-import 'package:diyet/ui/views/login/kilo.dart';
+import 'package:diyet/ui/views/login/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubit/sign_up_cubit.dart';
 
-class Boy extends StatefulWidget {
-  const Boy({super.key});
+class Height extends StatefulWidget {
+  const Height({super.key});
 
   @override
-  _BoyState createState() => _BoyState();
+  _HeightState createState() => _HeightState();
 }
 
-class _BoyState extends State<Boy> {
+class _HeightState extends State<Height> {
   int selectedHeight = 175; // Varsayılan boy değeri
 
   @override
@@ -20,7 +22,7 @@ class _BoyState extends State<Boy> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Align(
               alignment: Alignment.topLeft,
               child: Padding(
@@ -34,36 +36,35 @@ class _BoyState extends State<Boy> {
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.black, width: 3),
                     ),
-                    child: const Icon(Icons.arrow_back, color: Colors.black, size: 24, weight: 3),
+                    child: const Icon(Icons.arrow_back, color: Colors.black, size: 24),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 40),
-              Align(
-                alignment: Alignment.center,
-                child: RichText(
-                  text: TextSpan(
-                    text: "How ",
-                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
-                    children: [
-                      TextSpan(
-                        text: "tall",
-                        style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
-                      ),
-                      TextSpan(
-                        text: " are you?",
-                        style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
-                      ),
-                    ],
-                  ),
+            Align(
+              alignment: Alignment.center,
+              child: RichText(
+                text: const TextSpan(
+                  text: "How ",
+                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                  children: [
+                    TextSpan(
+                      text: "tall",
+                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
+                    ),
+                    TextSpan(
+                      text: " are you?",
+                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                    ),
+                  ],
                 ),
               ),
-
+            ),
 
             const SizedBox(height: 80),
 
-            // Seçili boy göstergesi (Merkezde büyük değer)
+            // Seçili boy göstergesi
             Center(
               child: Container(
                 width: 140,
@@ -74,7 +75,7 @@ class _BoyState extends State<Boy> {
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  selectedHeight.toString(),
+                  "$selectedHeight cm",
                   style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
                 ),
               ),
@@ -82,22 +83,22 @@ class _BoyState extends State<Boy> {
 
             const SizedBox(height: 10),
 
-            // Cupertino Picker (Boy kaydırmalı seçim)
+            // Boy seçme işlemi
             SizedBox(
               height: 150,
               child: CupertinoPicker(
                 scrollController: FixedExtentScrollController(initialItem: selectedHeight - 100),
-                itemExtent: 50, // Yükseklik
+                itemExtent: 50,
                 onSelectedItemChanged: (int index) {
                   setState(() {
-                    selectedHeight = 100 + index; // 100 cm'den başlatıyoruz
+                    selectedHeight = 100 + index; // 100 cm'den başlat
                   });
                 },
                 children: List<Widget>.generate(101, (int index) {
-                  int heightValue = 100 + index; // 100 - 200 arası değerler
+                  int heightValue = 100 + index;
                   return Center(
                     child: Text(
-                      heightValue.toString(),
+                      "$heightValue cm",
                       style: TextStyle(
                         fontSize: heightValue == selectedHeight ? 24 : 18,
                         fontWeight: heightValue == selectedHeight ? FontWeight.bold : FontWeight.normal,
@@ -122,10 +123,14 @@ class _BoyState extends State<Boy> {
                 minimumSize: const Size(double.infinity, 50),
               ),
               onPressed: () {
+                // Boy bilgisini kaydet
+                context.read<SignUpCubit>().setHeight(selectedHeight);
+
+                // Sonraki sayfaya geç
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Kilo() ,
+                    builder: (context) => const Weight(),
                   ),
                 );
                 print("Seçilen Boy: $selectedHeight cm");
