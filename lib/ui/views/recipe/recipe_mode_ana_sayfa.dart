@@ -1,6 +1,9 @@
-import 'package:diyet/ui/views/recipe/dolabimda_ne_var.dart';
+
+
 import 'package:diyet/ui/views/recipe/time_limits.dart';
 import 'package:flutter/material.dart';
+
+import 'fridge.dart';
 
 
 class RecipeModeAnaSayfa extends StatelessWidget {

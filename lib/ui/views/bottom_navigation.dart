@@ -1,9 +1,10 @@
-import 'package:diyet/ui/views/diyet/veri_alma_kilo_sayfa.dart';
+
+import 'package:diyet/ui/views/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 
-import 'package:diyet/ui/views/home/ana_sayfa.dart';
-import 'package:diyet/ui/views/favori_sayfa.dart';
-import 'package:diyet/ui/views/profile/profil_sayfa.dart';
+import 'favori_sayfa.dart';
+import 'home/ana_sayfa.dart';
+
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -19,8 +20,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
     // Ana Sayfa Widget'ı
      FavoriSayfa(),
      AnaSayfa(),// Favoriler Sayfası Widget'ı
-     ProfilSayfa(), // Profil Sayfası Widget'ı
+     ProfilePage(), // Profil Sayfası Widget'ı
   ];
+
 
   @override
   Widget build(BuildContext context) {

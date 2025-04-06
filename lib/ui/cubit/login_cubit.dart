@@ -1,19 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../data/entity/user_model.dart';
 import '../../data/repo/repository.dart';
 
-class LoginCubit extends Cubit<String> {
+class LoginCubit extends Cubit<UserModel?> {
   final UserRepository repository;
 
-  LoginCubit(this.repository) : super('');
+  LoginCubit(this.repository) : super(null);
 
   Future<void> login(String email, String password) async {
     try {
-      final response = await repository.login(email, password);
-      print("API Response: $response");
-      emit(response);
+      final user = await repository.login(email, password);
+      if (user != null) {
+        emit(user);  // Başarılı giriş
+      } else {
+        emit(null);  // Başarısız giriş
+      }
     } catch (e) {
-      print("Error during login: $e");
-      emit("Error: $e");
+      emit(null);  // Hata durumunda null
     }
   }
 }

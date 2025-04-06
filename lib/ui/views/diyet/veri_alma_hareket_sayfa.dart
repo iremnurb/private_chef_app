@@ -1,5 +1,7 @@
+
+
+
 import 'package:diyet/ui/views/diyet/veri_alma_gun_sayfa.dart';
-import 'package:diyet/ui/views/diyet/veri_alma_timing_sayfa.dart';
 import 'package:flutter/material.dart';
 
 class VeriAlmaHareketSayfa extends StatefulWidget {

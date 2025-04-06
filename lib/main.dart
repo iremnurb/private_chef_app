@@ -1,19 +1,17 @@
-import 'package:diyet/data/repo/repository.dart';
+import 'package:diyet/ui/cubit/ana_sayfa_cubit.dart';
 import 'package:diyet/ui/cubit/login_cubit.dart';
-import 'package:diyet/ui/cubit/profil_sayfa_cubit.dart';
+import 'package:diyet/ui/cubit/profile_cubit.dart';
 import 'package:diyet/ui/cubit/sign_up_cubit.dart';
+import 'package:diyet/ui/cubit/veri_alma_gun_sayfa_cubit.dart';
+import 'package:diyet/ui/cubit/veri_alma_hareket_sayfa_cubit.dart';
+import 'package:diyet/ui/cubit/veri_alma_kilo_sayfa_cubit.dart';
+import 'package:diyet/ui/cubit/veri_alma_timig_sayfa_cubit.dart';
 import 'package:diyet/ui/views/login/ilk_sayfa.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:diyet/ui/cubit/ana_sayfa_cubit.dart';
-import 'package:diyet/ui/cubit/veri_alma_kilo_sayfa_cubit.dart';
-import 'package:diyet/ui/cubit/veri_alma_gun_sayfa_cubit.dart';
-import 'package:diyet/ui/cubit/veri_alma_hareket_sayfa_cubit.dart';
-import 'package:diyet/ui/cubit/veri_alma_timig_sayfa_cubit.dart';
-//import 'package:diyet/ui/cubit/diyet_listem_sayfa_cubit.dart';
-//import 'package:diyet/data/repo/repository.dart';
+import 'data/repo/repository.dart';
 
-import 'package:diyet/ui/views/bottom_navigation.dart';
+
 
 
 void main() {
@@ -35,9 +33,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => VeriAlmaGunSayfaCubit()),
         BlocProvider(create: (context) => VeriAlmaHareketSayfaCubit()),
         BlocProvider(create: (context) => VeriAlmaTimigSayfaCubit()),
-        BlocProvider(create: (context) => ProfilSayfaCubit() ),
         BlocProvider(create: (context) => SignUpCubit(UserRepository())),
         BlocProvider(create: (context) => LoginCubit(UserRepository()) ),
+        BlocProvider(create: (context) => ProfileCubit(UserRepository())),
       ],
 
       child: MaterialApp(

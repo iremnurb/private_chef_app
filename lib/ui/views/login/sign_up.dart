@@ -1,8 +1,8 @@
-import 'package:diyet/ui/views/login/gender.dart';
-import 'package:diyet/ui/views/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/sign_up_cubit.dart';
+import 'gender.dart';
+import 'login.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});

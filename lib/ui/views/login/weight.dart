@@ -1,8 +1,10 @@
-import 'package:diyet/ui/views/bottom_navigation.dart';
+
 import 'package:flutter/material.dart';
 import '../home/ana_sayfa.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/sign_up_cubit.dart';
+import '../../cubit/login_cubit.dart';
+import 'login.dart';
 
 class Weight extends StatefulWidget {
   const Weight({super.key});
@@ -131,26 +133,29 @@ class _WeightState extends State<Weight> {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 minimumSize: const Size(double.infinity, 50),
               ),
-              onPressed: () {
+              onPressed: () async {
                 // Kullanıcının kilosunu kaydet
                 context.read<SignUpCubit>().setWeight(selectedWeight.toInt());
 
-                // API'ye kayıt isteği gönder
-                context.read<SignUpCubit>().signUp();
 
-                // Ana Sayfaya Yönlendirme
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => BottomNavigation()),
-                );
+                  // Kullanıcıyı kaydet
+                  await context.read<SignUpCubit>().signUp();
 
-                // Başarılı mesaj
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Congrats! You are registered"),
-                    duration: Duration(seconds: 3),
-                  ),
-                );
+
+                    // Giriş başarılıysa Ana Sayfaya Yönlendirme
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Login()),
+                    );
+
+                    // Başarılı mesaj
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Congrats! You are registered and logged in"),
+                        duration: Duration(seconds: 3),
+                      ),
+                    );
+
               },
               child: const Text(
                 "Finish",

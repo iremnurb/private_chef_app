@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:diyet/ui/cubit/diyet_listem_sayfa_cubit.dart';
+
 
 /*class DiyetListemSayfa extends StatelessWidget {
   @override

@@ -1,7 +1,11 @@
+
+
 import 'package:diyet/ui/views/login/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/login_cubit.dart';
+import '../bottom_navigation.dart';
+
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -152,7 +156,7 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   minimumSize: const Size(double.infinity, 50),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (emailController.text.isEmpty || !emailController.text.contains('@')) {
                     setState(() {
                       errorMessage = "Please enter a valid email address";
@@ -160,10 +164,23 @@ class _LoginState extends State<Login> {
                     return;
                   }
 
-                  context.read<LoginCubit>().login(
+                  await context.read<LoginCubit>().login(
                     emailController.text,
                     passwordController.text,
                   );
+
+                  // Kullanıcı bilgisi alındıktan sonra kontrol
+                  final user = context.read<LoginCubit>().state;
+                  if (user != null) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => BottomNavigation()),
+                    );
+                  } else {
+                    setState(() {
+                      errorMessage = "Login failed: Incorrect email or password";
+                    });
+                  }
                 },
                 child: const Text(
                   "Log In",
@@ -172,23 +189,11 @@ class _LoginState extends State<Login> {
               ),
             ),
 
+
             const SizedBox(height: 20),
 
-            // Hata Mesajı
-            BlocBuilder<LoginCubit, String>(
-              builder: (context, state) {
-                if (state.isNotEmpty && state != "Login successful!") {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      state,
-                      style: const TextStyle(color: Colors.red, fontSize: 20,fontWeight: FontWeight.bold),
-                    ),
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
+
+
 
             const SizedBox(height: 10),
 

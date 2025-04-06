@@ -1,7 +1,8 @@
-import 'package:diyet/ui/views/login/age.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/sign_up_cubit.dart';
+import 'age.dart';
 
 class Gender extends StatefulWidget {
   const Gender({super.key});

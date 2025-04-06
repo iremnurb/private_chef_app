@@ -103,7 +103,7 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Confirmation", style: TextStyle(fontWeight: FontWeight.bold)),
-          content: const Text("Are you sure you want to create your diet list?",
+          content: const Text("Are you sure you want to create your diyet list?",
               style: TextStyle(fontSize: 18)),
           actions: [
 
@@ -363,7 +363,7 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
             "Confirmation",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          content: const Text("Are you sure you want to create your diet list?",
+          content: const Text("Are you sure you want to create your diyet list?",
             style: TextStyle(fontSize: 18),),
           actions: [
             /// **No Butonu**

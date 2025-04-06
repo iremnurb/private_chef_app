@@ -92,6 +92,7 @@ flutter:
    - assets/images/login_ust.png
    - assets/images/erkek.png
    - assets/images/kadın.png
+   - assets/categorized_ingredients2.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

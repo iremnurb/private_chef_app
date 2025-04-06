@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/entity/user_model.dart';
 import '../../data/repo/repository.dart';
 
-class SignUpCubit extends Cubit<String> {
+class SignUpCubit extends Cubit<UserModel?> {
   final UserRepository repository;
   UserModel _user = UserModel(
     username: '',
@@ -14,7 +14,7 @@ class SignUpCubit extends Cubit<String> {
     weight: 0,
   );
 
-  SignUpCubit(this.repository) : super('');
+  SignUpCubit(this.repository) : super(null);
 
   void setUsername(String username) {
     _user = _user.copyWith(username: username);
@@ -46,12 +46,14 @@ class SignUpCubit extends Cubit<String> {
 
   Future<void> signUp() async {
     try {
-      final response = await repository.signUp(_user);
-      print("API Response: $response");
-      emit(response);
+      final createdUser = await repository.signUp(_user);
+      if (createdUser != null) {
+        emit(createdUser as UserModel?);  // Kullanıcı bilgisi emit ediliyor
+      } else {
+        emit(null);  // Başarısız kayıt
+      }
     } catch (e) {
-      print("Error during signup: $e");
-      emit("Error: $e");
+      emit(null);  // Hata durumunda null
     }
   }
 }
