@@ -1,9 +1,9 @@
 
 
-import 'package:diyet/ui/views/recipe/time_limits.dart';
+import 'package:diyet/ui/views/recipe/time/time_limits.dart';
 import 'package:flutter/material.dart';
 
-import 'fridge.dart';
+import 'fridge/fridge.dart';
 
 
 class RecipeModeAnaSayfa extends StatelessWidget {

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class VeriAlmaTimigSayfaCubit extends Cubit<int> {
- VeriAlmaTimigSayfaCubit() : super(0);
+class VeriAlmaTimingSayfaCubit extends Cubit<List<TimeOfDay?>> {
+  VeriAlmaTimingSayfaCubit() : super(List.filled(4, null));
 
-  void navigateTo(int index) {
-    emit(index);
+  void updateTime(int index, TimeOfDay time) {
+    final newList = List<TimeOfDay?>.from(state);
+    newList[index] = time;
+    emit(newList);
   }
 }

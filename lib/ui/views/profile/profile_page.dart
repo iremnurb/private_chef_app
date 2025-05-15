@@ -1,3 +1,4 @@
+import 'package:diyet/ui/views/home/ana_sayfa.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/entity/user_model.dart';
@@ -17,7 +18,9 @@ class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController ageController;
   late TextEditingController heightController;
   late TextEditingController weightController;
-  late String gender;
+  late TextEditingController addressController;
+  String gender = "Female";
+  String country = "United States";
 
   @override
   void initState() {
@@ -28,7 +31,8 @@ class _ProfilePageState extends State<ProfilePage> {
     ageController = TextEditingController(text: user?.age.toString());
     heightController = TextEditingController(text: user?.height.toString());
     weightController = TextEditingController(text: user?.weight.toString());
-    gender = user?.gender ?? 'Male';
+    addressController = TextEditingController(text: "45 New Avenue, New York");
+    gender = user?.gender ?? "Female";
   }
 
   @override
@@ -38,6 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
     ageController.dispose();
     heightController.dispose();
     weightController.dispose();
+    addressController.dispose();
     super.dispose();
   }
 
@@ -55,30 +60,40 @@ class _ProfilePageState extends State<ProfilePage> {
 
     await context.read<ProfileCubit>().updateProfile(updatedUser);
 
-    // Kullanıcı bilgisini güncelle ve UI'yı yenile
-    //context.read<ProfileCubit>().updateProfile(updatedUser);
-
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Profile updated successfully')),
     );
 
-    // UI'yı güncellemek için setState kullan
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final Color primaryColor = const Color(0xFFD9BBA9);
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Profile"),
+        title: const Text("Profile", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: const Color(0xFF7C8C03),
+        backgroundColor: primaryColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) =>  AnaSayfa()),
+            );
+          },
+
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            _buildTextField("Username", usernameController),
+            _buildTextField("Full name", usernameController),
             const SizedBox(height: 16),
             _buildTextField("Email", emailController),
             const SizedBox(height: 16),
@@ -88,20 +103,23 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 16),
             _buildTextField("Weight (kg)", weightController, isNumber: true),
             const SizedBox(height: 16),
-            _buildGenderSelector(),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: updateProfile,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF7C8C03),
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+            _buildGenderSelector(primaryColor),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: updateProfile,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-              ),
-              child: const Text(
-                "Update Profile",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                child: const Text(
+                  "SUBMIT",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+                ),
               ),
             ),
           ],
@@ -116,23 +134,25 @@ class _ProfilePageState extends State<ProfilePage> {
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        filled: true,
+        fillColor: const Color(0xFFF5F5F5),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
   }
 
-  Widget _buildGenderSelector() {
+  Widget _buildGenderSelector(Color color) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildGenderOption("Male"),
-        const SizedBox(width: 16),
-        _buildGenderOption("Female"),
+        Expanded(child: _genderButton("Male", color)),
+        const SizedBox(width: 12),
+        Expanded(child: _genderButton("Female", color)),
       ],
     );
   }
 
-  Widget _buildGenderOption(String value) {
+  Widget _genderButton(String value, Color color) {
+    final isSelected = gender == value;
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -140,15 +160,16 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: gender == value ? const Color(0xFF7C8C03) : Colors.grey[300],
-          borderRadius: BorderRadius.circular(20),
+          color: isSelected ? color : const Color(0xFFE0E0E0),
+          borderRadius: BorderRadius.circular(10),
         ),
+        alignment: Alignment.center,
         child: Text(
           value,
           style: TextStyle(
-            color: gender == value ? Colors.white : Colors.black,
+            color: isSelected ? Colors.white : Colors.black87,
             fontWeight: FontWeight.bold,
           ),
         ),

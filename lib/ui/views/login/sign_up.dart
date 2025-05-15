@@ -121,9 +121,20 @@ class SignUp extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text(
-                "Already have an account? Login",
-                style: TextStyle(color: Color(0xFF7C8C03), fontWeight: FontWeight.bold),
+              child: RichText(
+                text: const TextSpan(
+                  text: "Already have an account? ",
+                  style: TextStyle(color: Colors.black, fontSize: 14),
+                  children: [
+                    TextSpan(
+                      text: "Log in",
+                      style: TextStyle(
+                        color: Color(0xFF7C8C03),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

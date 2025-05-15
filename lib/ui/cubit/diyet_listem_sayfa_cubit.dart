@@ -1,54 +1,49 @@
-/*import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:diyet/data/entity/kisi_bilgisi.dart';
-import 'package:diyet/data/repo/repository.dart';
-import 'package:diyet/ui/views/diyet/veri_alma_kilo_sayfa.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import "package:diyet/data/entity/diyet_list_model.dart";
+import '../../../data/repo/repository.dart';
 
-class DietState {
-  final int days;
-  final int dailyCalories;
-  final bool loading;
+enum DiyetListemSayfaStatus { initial, loading, success, failure }
 
-  DietState({this.days = 0, this.dailyCalories = 0, this.loading = true});
+class DiyetListemSayfaCubit extends Cubit<DiyetListemSayfaState> {
+  final DietRepository repository;
+
+  DiyetListemSayfaCubit(this.repository) : super(DiyetListemSayfaState.initial());
+
+  Future<void> fetchDietList(int userId) async {
+    try {
+      emit(DiyetListemSayfaState.loading());
+      final dietList = await repository.fetchDietList(userId);
+      emit(DiyetListemSayfaState.success(dietList));
+    } catch (e) {
+      emit(DiyetListemSayfaState.failure(e.toString()));
+    }
+  }
 }
 
-class DiyetListemSayfaCubit extends Cubit<DietState> {
-  final Repository repository;
+class DiyetListemSayfaState {
+  final DiyetListemSayfaStatus status;
+  final List<DietListDay> dietList;
+  final String? errorMessage;
 
-  DiyetListemSayfaCubit(this.repository) : super(DietState());
+  const DiyetListemSayfaState._({
+    required this.status,
+    this.dietList = const [],
+    this.errorMessage,
+  });
 
-  void loadDietPlan({
-    required String aktiviteSeviyesi,
-    required double hedefKilo,
-    required int yemekSayisi,
-  }) {
-    emit(DietState(loading: true));
-
-    // Kullanıcının sabit şimdilik belirlenen bilgileri
-    double kilo = 60;
-    double boy = 176;
-    int yas = 25;
-    String cinsiyet = "male";
-
-    KisiBilgisi kisi = KisiBilgisi(
-      kilo: kilo,
-      boy: boy,
-      yas: yas,
-      cinsiyet: cinsiyet,
-      aktiviteSeviyesi: aktiviteSeviyesi,
-      hedefKilo: hedefKilo,
-      yemekSayisi: yemekSayisi,
-    );
-
-    double tdee = repository.calculateTDEE(kisi);
-    int days = repository.calculateDietDays(kisi);
-
-
-    // Gün sayısı çok büyükse, sınır koy
-    if (days > 365) {
-      days = 365; // Maksimum 1 yıl sınırı koy
-    }
-
-    emit(DietState(days: days, dailyCalories: (tdee - 700).round(), loading: false));
+  factory DiyetListemSayfaState.initial() {
+    return const DiyetListemSayfaState._(status: DiyetListemSayfaStatus.initial);
   }
 
-}*/
+  factory DiyetListemSayfaState.loading() {
+    return const DiyetListemSayfaState._(status: DiyetListemSayfaStatus.loading);
+  }
+
+  factory DiyetListemSayfaState.success(List<DietListDay> dietList) {
+    return DiyetListemSayfaState._(status: DiyetListemSayfaStatus.success, dietList: dietList);
+  }
+
+  factory DiyetListemSayfaState.failure(String errorMessage) {
+    return DiyetListemSayfaState._(status: DiyetListemSayfaStatus.failure, errorMessage: errorMessage);
+  }
+}

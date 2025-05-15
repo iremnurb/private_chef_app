@@ -1,8 +1,7 @@
-
-
-
 import 'package:diyet/ui/views/diyet/veri_alma_hareket_sayfa.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:diyet/ui/cubit/veri_alma_kilo_sayfa_cubit.dart';
 
 class VeriAlmaKiloSayfa extends StatefulWidget {
   @override
@@ -10,20 +9,18 @@ class VeriAlmaKiloSayfa extends StatefulWidget {
 }
 
 class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
-  bool isKgSelected = true; // Varsayılan olarak kg seçili
-  int weight = 60; // Varsayılan ağırlık
+  int weight = 60; // Varsayılan ağırlık (kg)
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
-
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 40), // Üst boşluk ekleyerek ikonun ekranın tepesine yapışmasını engelliyoruz.
+          const SizedBox(height: 40),
 
-          //Geri Butonu
+          // Geri Butonu
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
@@ -35,17 +32,17 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
                   height: 50,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.black, width: 5), // Dış çerçeve rengi
+                    border: Border.all(color: Colors.black, width: 5),
                   ),
-                  child: const Icon(Icons.arrow_back, color: Colors.black, size:32,weight: 5,),
+                  child: const Icon(Icons.arrow_back, color: Colors.black, size: 32),
                 ),
               ),
             ),
           ),
 
-          const SizedBox(height: 80),
+          const SizedBox(height: 75),
 
-          //Başlık
+          // Başlık
           RichText(
             text: const TextSpan(
               text: "Your ",
@@ -53,26 +50,27 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
               children: [
                 TextSpan(
                   text: "target weight",
-                  style: TextStyle(color: Color(0xFFD0A890)), // Açık kahverengi tonu
+                  style: TextStyle(color: Color(0xFFD0A890)),
                 ),
               ],
             ),
           ),
+
           const SizedBox(height: 20),
 
-          /// **Kg / Lb Toggle**
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildUnitButton("kg", isKgSelected),
-              const SizedBox(width: 10),
-              _buildUnitButton("lb", !isKgSelected),
-            ],
+          // Sadece "kg" yazısı
+          const Text(
+            "kg",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black54,
+            ),
           ),
-          const SizedBox(height: 10),
 
-          /// **Ağırlık Seçici (Wheel Picker)**
-          const Icon(Icons.arrow_drop_down, size: 30, color: Color(0xFFF2B33D)), // Sarı ok
+          const SizedBox(height: 10),
+          const Icon(Icons.arrow_drop_down, size: 30, color: Color(0xFFF2B33D)),
+
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -84,17 +82,19 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
               style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
           ),
+
           const SizedBox(height: 10),
 
-          /// **Sürüklenebilir Ağırlık Ölçeği**
+          // Sürüklenebilir Ağırlık Ölçeği
           SizedBox(
             height: 150,
             child: ListWheelScrollView.useDelegate(
-              itemExtent: 50, // Her elemanın yüksekliği
+              itemExtent: 50,
               physics: const FixedExtentScrollPhysics(),
               onSelectedItemChanged: (index) {
                 setState(() {
-                  weight = isKgSelected ? (30 + index) : ((30 + index) * 2.2).toInt(); // lb dönüşümü
+                  weight = 30 + index;
+                  context.read<VeriAlmaKiloSayfaCubit>().setKilo(weight);
                 });
               },
               childDelegate: ListWheelChildBuilderDelegate(
@@ -108,17 +108,17 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
                     ),
                   );
                 },
-                childCount: 71, // 30-100 arasında değerler
+                childCount: 71,
               ),
               controller: FixedExtentScrollController(
-                initialItem: weight - 30, // Varsayılan ağırlık seçili başlasın
+                initialItem: weight - 30,
               ),
             ),
           ),
 
           const Spacer(),
 
-          /// **Next Butonu**
+          // Next Butonu
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -132,7 +132,7 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
               width: MediaQuery.of(context).size.width * 0.8,
               height: 55,
               decoration: BoxDecoration(
-                color: const Color(0xFF8A9B0F), // Yeşil tonu
+                color: const Color(0xFF8A9B0F),
                 borderRadius: BorderRadius.circular(12),
               ),
               alignment: Alignment.center,
@@ -142,35 +142,9 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
               ),
             ),
           ),
+
           const SizedBox(height: 40),
         ],
-      ),
-    );
-  }
-
-  /// **Kg / Lb Seçenek Butonu**
-  Widget _buildUnitButton(String unit, bool isSelected) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isKgSelected = unit == "kg";
-          weight = isKgSelected ? weight : (weight * 2.2).toInt(); // lb'ye çevir
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF0C2D48) : Colors.transparent, // Koyu mavi veya transparan
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          unit,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: isSelected ? Colors.white : Colors.black87,
-          ),
-        ),
       ),
     );
   }

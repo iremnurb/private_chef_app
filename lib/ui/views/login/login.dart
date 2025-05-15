@@ -1,10 +1,12 @@
 
 
+import 'package:diyet/ui/views/home/ana_sayfa.dart';
 import 'package:diyet/ui/views/login/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/login_cubit.dart';
-import '../bottom_navigation.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // 🔹 Yukarıya ekle
+
 
 
 class Login extends StatefulWidget {
@@ -157,31 +159,36 @@ class _LoginState extends State<Login> {
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 onPressed: () async {
-                  if (emailController.text.isEmpty || !emailController.text.contains('@')) {
-                    setState(() {
-                      errorMessage = "Please enter a valid email address";
-                    });
-                    return;
-                  }
+            if (emailController.text.isEmpty || !emailController.text.contains('@')) {
+            setState(() {
+            errorMessage = "Please enter a valid email address";
+            });
+            return;
+            }
 
-                  await context.read<LoginCubit>().login(
-                    emailController.text,
-                    passwordController.text,
-                  );
+            await context.read<LoginCubit>().login(
+            emailController.text,
+            passwordController.text,
+            );
 
-                  // Kullanıcı bilgisi alındıktan sonra kontrol
-                  final user = context.read<LoginCubit>().state;
-                  if (user != null) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => BottomNavigation()),
-                    );
-                  } else {
-                    setState(() {
-                      errorMessage = "Login failed: Incorrect email or password";
-                    });
-                  }
-                },
+            // Kullanıcı bilgisi alındıktan sonra kontrol
+            final user = context.read<LoginCubit>().state;
+            if (user != null) {
+            // ✅ user.id bilgisini SharedPreferences içine kaydet
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setInt('userId', user.id as int); // ✅ Tutarlı key
+            //await prefs.setInt('user_id', user.id as int);
+
+            Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AnaSayfa()),
+            );
+            } else {
+            setState(() {
+            errorMessage = "Login failed: Incorrect email or password";
+            });
+            }
+            },
                 child: const Text(
                   "Log In",
                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),

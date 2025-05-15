@@ -1,29 +1,31 @@
 import 'dart:async';
+import 'package:diyet/data/entity/diet_model.dart';
+import 'package:diyet/data/repo/repository.dart';
+import 'package:diyet/ui/views/diyet/diyet_listem_sayfa.dart';
 import 'package:flutter/material.dart';
-
-import '../home/ana_sayfa.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:diyet/data/services/notification_service.dart';
+import 'package:diyet/data/entity/diyet_list_model.dart';
 
 class VeriAlmaTimingSayfa extends StatefulWidget {
-  final int mealCount;
-
-  VeriAlmaTimingSayfa({required this.mealCount});
-
   @override
   _VeriAlmaTimingSayfaState createState() => _VeriAlmaTimingSayfaState();
 }
 
 class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
-  List<TimeOfDay?> mealTimes = [];
+  final List<String> mealLabels = ["Breakfast", "Lunch", "Snack", "Dinner"];
+  late List<TimeOfDay?> mealTimes;
+  DietModel? _createdDietPlan; // Oluşturulan diyet planını sakla
+
   bool _isLoading = false;
   double _progress = 0.0;
 
   @override
   void initState() {
     super.initState();
-    mealTimes = List.filled(widget.mealCount, null);
+    mealTimes = List.filled(mealLabels.length, null);
   }
 
-  //Saat Seçici Fonksiyonu
   Future<void> _selectTime(BuildContext context, int index) async {
     TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -32,33 +34,27 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
         return Theme(
           data: ThemeData(
             timePickerTheme: TimePickerThemeData(
-              backgroundColor: Colors.white, // Arka plan
-              hourMinuteColor: Colors.grey.shade200, // Saat ve dakika kutusunun arka planı
-              hourMinuteTextColor: Colors.black, // Saat ve dakika yazı rengi
-              dialHandColor: const Color(0xFF8A9B0F), // Saat seçim ibresi rengi
-              dialBackgroundColor: Colors.grey.shade100, // Saat çemberinin rengi
-              entryModeIconColor: const Color(0xFF8A9B0F), // Saat giriş ikonu rengi
-
-              // **AM / PM Seçili Arka Plan Rengi**
-              dayPeriodColor: const Color(0xFF8A9B0F), // AM/PM seçildiğinde arka plan rengi
-              dayPeriodTextColor: Colors.black, // AM/PM seçili yazı rengi
-
-
-              // **OK ve CANCEL Butonları**
+              backgroundColor: Colors.white,
+              hourMinuteColor: Colors.grey.shade200,
+              hourMinuteTextColor: Colors.black,
+              dialHandColor: const Color(0xFF8A9B0F),
+              dialBackgroundColor: Colors.grey.shade100,
+              entryModeIconColor: const Color(0xFF8A9B0F),
+              dayPeriodColor: const Color(0xFF8A9B0F),
+              dayPeriodTextColor: Colors.black,
               confirmButtonStyle: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.grey.shade200), // OK butonu rengi
-                foregroundColor: MaterialStateProperty.all(Colors.black), // OK butonu yazı rengi
+                backgroundColor: MaterialStateProperty.all(Colors.grey.shade200),
+                foregroundColor: MaterialStateProperty.all(Colors.black),
               ),
               cancelButtonStyle: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.grey.shade200), // Cancel butonu rengi
-                foregroundColor: MaterialStateProperty.all(Colors.black), // Cancel butonu yazı rengi
+                backgroundColor: MaterialStateProperty.all(Colors.grey.shade200),
+                foregroundColor: MaterialStateProperty.all(Colors.black),
               ),
             ),
           ),
           child: child!,
         );
       },
-
     );
 
     if (picked != null) {
@@ -68,26 +64,33 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
     }
   }
 
-  //YES Butonuna Basıldığında Loading Ekranını Aç
   void _startLoading() {
     setState(() {
       _isLoading = true;
       _progress = 0.0;
     });
 
-    Timer.periodic(Duration(milliseconds: 300), (timer) {
+    Timer.periodic(const Duration(milliseconds: 300), (timer) async {
       if (_progress >= 1.0) {
         timer.cancel();
         setState(() {
           _isLoading = false;
         });
 
-        // Yükleme tamamlandığında yeni sayfaya yönlendir
-        //sonradan değiştirilecek
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => AnaSayfa()),
-        );
+        final prefs = await SharedPreferences.getInstance();
+        final userId = prefs.getInt('userId');
+
+        if (userId == null || userId == 0) {
+          print("SharedPreferences'tan geçerli userId alınamadı");
+        } else {
+          print("Navigating with userId: $userId");
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DiyetListem(userId: userId),
+            ),
+          );
+        }
       } else {
         setState(() {
           _progress += 0.1;
@@ -96,7 +99,73 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
     });
   }
 
-  //Onay Diyaloğu Açma
+  Future<void> _scheduleMealNotifications(DietModel dietPlan, List<DietListDay> dietList) async {
+    // Önceki bildirimleri iptal et
+    await NotificationService().cancelAll();
+
+    // Öğün zamanlarını bir haritaya eşle (kullanıcının girdiği zamanlar)
+    final mealTimeMap = {
+      'breakfast': formatTime(mealTimes[0]!),
+      'lunch': formatTime(mealTimes[1]!),
+      'snack': formatTime(mealTimes[2]!),
+      'dinner': formatTime(mealTimes[3]!),
+    };
+
+    // start_date ile end_date arasındaki gün sayısını hesapla
+    DateTime currentDay = dietPlan.startDate;
+    int? dayCount = dietPlan.mealCount; // meal_count, gün sayısını temsil eder
+    int notificationCounter = 0; // Benzersiz ID’ler için bir sayaç
+
+    while (dayCount! > 0) {
+      // dietList’ten günün öğünlerini bul
+      final dayData = dietList.firstWhere(
+            (day) => day.day == (dietPlan.mealCount! - dayCount! + 1),
+        orElse: () => DietListDay(day: dietPlan.mealCount! - dayCount! + 1, dailyCalories: 0, meals: {}),
+      );
+
+      for (final mealType in mealTimeMap.keys) {
+        final mealTimeStr = mealTimeMap[mealType];
+        if (mealTimeStr == null) continue;
+
+        final timeParts = mealTimeStr.split(':');
+        final hour = int.parse(timeParts[0]);
+        final minute = int.parse(timeParts[1]);
+
+        // Günün ilgili öğününü al
+        final meal = dayData.meals?[mealType];
+        if (meal == null) continue;
+
+        final scheduledDateTime = DateTime(
+          currentDay.year,
+          currentDay.month,
+          currentDay.day,
+          hour,
+          minute,
+        );
+
+        if (scheduledDateTime.isAfter(DateTime.now())) {
+          final mealId = meal['id'] as int?;
+          if (mealId == null) continue; // Eğer id yoksa, bu öğünü atla
+
+          // Benzersiz bir ID oluştur, 32-bit sınırları içinde kal
+          notificationCounter++;
+          final notificationId = (mealId % 1000 + notificationCounter) % 2147483647; // 2^31 - 1
+
+          await NotificationService().scheduleNotification(
+            id: notificationId,
+            title: '$mealType Time',
+            body: 'It\'s time for your $mealType! Tap to see the recipe.',
+            scheduledDateTime: scheduledDateTime,
+            payload: mealId.toString(),
+          );
+        }
+      }
+
+      currentDay = currentDay.add(const Duration(days: 1));
+      dayCount--;
+    }
+  }
+
   void _showConfirmationDialog() {
     showDialog(
       context: context,
@@ -106,18 +175,69 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
           content: const Text("Are you sure you want to create your diyet list?",
               style: TextStyle(fontSize: 18)),
           actions: [
-
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               child: const Text("NO", style: TextStyle(color: Color(0xFF8A9B0F))),
             ),
-
             TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Dialogu kapat
-                _startLoading(); // Yükleme ekranını başlat
+              onPressed: () async {
+                Navigator.pop(context);
+                final prefs = await SharedPreferences.getInstance();
+
+                final userId = prefs.getInt('userId');
+                final targetWeight = prefs.getInt('target_weight');
+                final mealCount = prefs.getInt('meal_count');
+                final activity = prefs.getString('activity');
+
+                if (userId == null || targetWeight == null || mealCount == null || activity == null || mealTimes.contains(null)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Missing data. Please complete all fields.")),
+                  );
+                  return;
+                }
+
+                final now = DateTime.now();
+
+                final dietPlan = DietModel(
+                  id: null,
+                  userId: userId,
+                  startDate: now,
+                  endDate: now.add(Duration(days: mealCount)),
+                  targetWeight: targetWeight,
+                  mealCount: mealCount,
+                  status: 'active',
+                  activity: activity.toLowerCase(),
+                  breakfastTime: formatTime(mealTimes[0]!),
+                  lunchTime: formatTime(mealTimes[1]!),
+                  snackTime: formatTime(mealTimes[2]!),
+                  dinnerTime: formatTime(mealTimes[3]!),
+                );
+
+                final repo = DietRepository();
+                final created = await repo.createDietPlan(dietPlan);
+                if (created == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Failed to create diet plan.")),
+                  );
+                  return;
+                }
+
+                _createdDietPlan = created; // Oluşturulan diyet planını sakla
+                final listSuccess = await repo.createDietList(userId);
+
+                if (listSuccess) {
+                  print("DietMeals oluşturuldu");
+                  final dietList = await repo.fetchDietList(userId);
+                  if (_createdDietPlan != null && dietList.isNotEmpty) {
+                    await _scheduleMealNotifications(_createdDietPlan!, dietList);
+                  } else {
+                    print("Diyet planı veya liste alınamadı.");
+                  }
+                } else {
+                  print("DietMeals oluşturulamadı");
+                }
+
+                _startLoading();
               },
               child: const Text("YES", style: TextStyle(color: Color(0xFF8A9B0F), fontWeight: FontWeight.bold)),
             ),
@@ -125,6 +245,10 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
         );
       },
     );
+  }
+
+  String formatTime(TimeOfDay time) {
+    return "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}:00";
   }
 
   @override
@@ -135,7 +259,6 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
     );
   }
 
-  //Ana İçerik Ekranı
   Widget buildMainScreen() {
     return Column(
       children: [
@@ -159,8 +282,6 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
           ),
         ),
         const SizedBox(height: 60),
-
-
         RichText(
           text: const TextSpan(
             text: "Enter your ",
@@ -173,19 +294,13 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
             ],
           ),
         ),
-
         const SizedBox(height: 50),
-
-        /// **Saat Seçenekleri**
         Column(
-          children: List.generate(widget.mealCount, (index) {
-            return _buildMealTimeCard("Meal ${index + 1}", index);
+          children: List.generate(mealLabels.length, (index) {
+            return _buildMealTimeCard(mealLabels[index], index);
           }),
         ),
-
         const Spacer(),
-
-        //reate Butonu
         GestureDetector(
           onTap: _showConfirmationDialog,
           child: Container(
@@ -202,28 +317,18 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
             ),
           ),
         ),
-
         const SizedBox(height: 40),
       ],
     );
   }
 
-  /// **Loading Ekranı**
   Widget buildLoadingScreen() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(
-          'assets/images/salad.png',
-          width: 120,
-          height: 120,
-          fit: BoxFit.contain,
-        ),
+        Image.asset('assets/images/salad.png', width: 120, height: 120),
         const SizedBox(height: 30),
-        const Text(
-          'Preparing your recipes',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
+        const Text('Preparing your recipes', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
         const SizedBox(height: 20),
         const Text(
           '  Setting up your nutrition plan and  \n analyzing your goals...',
@@ -240,15 +345,12 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
           ),
         ),
         const SizedBox(height: 10),
-        Text(
-          '${(_progress * 100).toInt()}%',
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFABD904)),
-        ),
+        Text('${(_progress * 100).toInt()}%',
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFABD904))),
       ],
     );
   }
 
-  //Yemek Zamanı Seçenek Kartı
   Widget _buildMealTimeCard(String mealType, int index) {
     return GestureDetector(
       onTap: () => _selectTime(context, index),
@@ -262,18 +364,13 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            /// **Yemek İsmi**
-            Text(
-              mealType,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade700),
-            ),
-
-            /// **Seçili Saat**
+            Text(mealType,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade700)),
             Text(
               mealTimes[index] != null
-                  ? "${mealTimes[index]!.hour}:${mealTimes[index]!.minute.toString().padLeft(2, '0')}"
-                  : "X:X",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                  ? "${mealTimes[index]!.hour.toString().padLeft(2, '0')}:${mealTimes[index]!.minute.toString().padLeft(2, '0')}"
+                  : "--:--",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
             ),
           ],
         ),
@@ -281,6 +378,12 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
     );
   }
 }
+
+
+
+
+
+
 /*
 import 'package:diyet/ui/views/diyet/diyet_listem_sayfa.dart';
 import 'package:flutter/material.dart';

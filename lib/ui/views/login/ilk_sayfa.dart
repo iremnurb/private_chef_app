@@ -1,4 +1,5 @@
 
+import 'package:diyet/ui/views/login/sign_up.dart';
 import 'package:flutter/material.dart';
 
 import 'login.dart';
@@ -77,19 +78,19 @@ class IlkSayfa extends StatelessWidget {
                   imagePath: "assets/images/apple.png",
                   text: "Continue with Apple",
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
             TextButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Login(),
+                    builder: (context) => SignUp(),
                   ),
                 );
               },
               child: RichText(
                 text: const TextSpan(
-                  text: "Already have an account? ",
+                  text: "Don't you have an account? ",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -97,7 +98,7 @@ class IlkSayfa extends StatelessWidget {
                   ),
                   children: [
                     TextSpan(
-                      text: "Log In",
+                      text: "Sign Up",
                       style: TextStyle(
 
                         fontWeight: FontWeight.bold,

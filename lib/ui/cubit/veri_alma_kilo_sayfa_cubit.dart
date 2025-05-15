@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
-class VeriAlmaKiloSayfaCubit extends Cubit<double> {
-  VeriAlmaKiloSayfaCubit() : super(0.0);
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-  void setKilo(double kilo) {
-    emit(kilo);
-  }
+class VeriAlmaKiloSayfaCubit extends Cubit<int> {
+  VeriAlmaKiloSayfaCubit({int hedefKilo = 70}) : super(hedefKilo);
+
+  void setKilo(int yeni) => emit(yeni);
 }
