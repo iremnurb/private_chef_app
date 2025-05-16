@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'macros_selection.dart';
 
@@ -54,7 +55,7 @@ class _MaxCaloriesSelectionPageState extends State<MaxCaloriesSelectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Max Calories"),
+        title:  Text("Max Calories",style: GoogleFonts.poppins(),),
         backgroundColor: const Color(0xFFBF7E04),
       ),
       body: Padding(
@@ -62,9 +63,9 @@ class _MaxCaloriesSelectionPageState extends State<MaxCaloriesSelectionPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+             Text(
               "Set your maximum calorie limit:",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 30),
             Row(
@@ -86,7 +87,7 @@ class _MaxCaloriesSelectionPageState extends State<MaxCaloriesSelectionPage> {
             Center(
               child: Text(
                 "${_calories.toInt()} cal",
-                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                style:  GoogleFonts.poppins(fontSize: 28, fontWeight: FontWeight.bold),
               ),
             ),
             SliderTheme(
@@ -126,7 +127,7 @@ class _MaxCaloriesSelectionPageState extends State<MaxCaloriesSelectionPage> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    child: const Text("Next", style: TextStyle(color: Colors.white)),
+                    child:  Text("Next", style: GoogleFonts.poppins(color: Colors.white)),
                   ),
                 ),
               ],
@@ -134,7 +135,7 @@ class _MaxCaloriesSelectionPageState extends State<MaxCaloriesSelectionPage> {
             const SizedBox(height: 10),
             TextButton(
               onPressed: () => _submit(isSkip: true),
-              child: const Text("Skip", style: TextStyle(color: Colors.grey)),
+              child:  Text("Skip", style: GoogleFonts.poppins(color: Colors.grey)),
             ),
           ],
         ),

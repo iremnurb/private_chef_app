@@ -2,6 +2,7 @@
 
 import 'package:diyet/ui/views/recipe/time/time_limits.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'fridge/fridge.dart';
 
@@ -39,21 +40,21 @@ class RecipeModeAnaSayfa extends StatelessWidget {
               const SizedBox(height: 40),
 
               RichText(
-                text: const TextSpan(
-                  text: "   Discover the Recipe Mode: Get personalized recipe \n  suggestions based on ",
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                text:  TextSpan(
+                  text: "   Discover the Recipe Mode: Get personalized recipe\n suggestions based on ",
+                  style: GoogleFonts.poppins(fontSize: 15, color: Colors.grey),
                   children: [
                     TextSpan(
-                      text: "What’s in your fridge",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFF2B33D)),
+                      text: "What’s in  your fridge",
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Color(0xFFF2B33D)),
                     ),
                     TextSpan(
-                      text: " and \n  ",
-                      style: TextStyle(color: Colors.grey),
+                      text: " and \n ",
+                      style: GoogleFonts.poppins(color: Colors.grey),
                     ),
                     TextSpan(
                       text: "Time limits !",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFF2B33D)),
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Color(0xFFF2B33D)),
                     ),
                   ],
                 ),
@@ -129,9 +130,9 @@ class RecipeModeAnaSayfa extends StatelessWidget {
               padding: const EdgeInsets.only(left: 20),
               child: Text(
                 text,
-                style: const TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                   color: Colors.black,
                 ),
               ),
@@ -177,9 +178,9 @@ class RecipeModeAnaSayfa extends StatelessWidget {
               padding: const EdgeInsets.only(left: 20),
               child: Text(
                 text,
-                style: const TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                   color: Colors.black,
                 ),
               ),

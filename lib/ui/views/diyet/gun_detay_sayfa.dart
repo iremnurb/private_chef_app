@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:diyet/ui/views/diyet/ogun_detay_sayfa.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GunDetaySayfa extends StatelessWidget {
   final int gunNo;
@@ -32,9 +33,9 @@ class GunDetaySayfa extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title:  Text(
           'Diet List',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -49,7 +50,7 @@ class GunDetaySayfa extends StatelessWidget {
           Center(
             child: Text(
               "Day $gunNo",
-              style: const TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF8A9B0F),
@@ -77,7 +78,7 @@ class GunDetaySayfa extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => OgunDetaySayfa(mealId: mealId),
+                          builder: (_) => OgunDetaySayfa(mealId: mealId,themeColor:  Color(0xFFABD904)),
                         ),
                       );
                     }
@@ -103,7 +104,7 @@ class GunDetaySayfa extends StatelessWidget {
                             children: [
                               Text(
                                 mealName,
-                                style: const TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black87,
@@ -146,7 +147,7 @@ class GunDetaySayfa extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             text,
-            style: const TextStyle(fontSize: 12, color: Colors.orange),
+            style: GoogleFonts.poppins(fontSize: 12, color: Colors.orange),
           ),
         ],
       ),

@@ -69,7 +69,7 @@ class _MacrosSelectionPageState extends State<MacrosSelectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Macros"),
+        title:  Text("Macros",style: GoogleFonts.poppins(),),
         backgroundColor: const Color(0xFFBF7E04),
       ),
       body: Padding(
@@ -104,7 +104,7 @@ class _MacrosSelectionPageState extends State<MacrosSelectionPage> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    child: const Text("Next",style: TextStyle(color: Colors.white),),
+                    child:  Text("Next",style: GoogleFonts.poppins(color: Colors.white),),
                   ),
                 ),
               ],
@@ -112,7 +112,7 @@ class _MacrosSelectionPageState extends State<MacrosSelectionPage> {
             const SizedBox(height: 10),
             TextButton(
               onPressed: _submit,
-              child: const Text("Skip", style: TextStyle(color: Colors.grey)),
+              child:  Text("Skip", style: GoogleFonts.poppins(color: Colors.grey)),
             ),
           ],
         ),
@@ -128,7 +128,7 @@ class _MacrosSelectionPageState extends State<MacrosSelectionPage> {
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.black54),
+          labelStyle: GoogleFonts.poppins(color: Colors.black54),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),

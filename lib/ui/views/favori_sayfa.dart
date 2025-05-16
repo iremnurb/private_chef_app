@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:diyet/ui/cubit/login_cubit.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../data/entity/recipe_model.dart';
 import '../cubit/favori_sayfa_cubit.dart';
 import 'diyet/ogun_detay_sayfa.dart';
@@ -28,9 +29,9 @@ class _FavoriSayfaState extends State<FavoriSayfa> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 30),
-            const Text(
-              "Recipes",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+             Text(
+              "My Foods",
+              style: GoogleFonts.poppins(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
             Container(
@@ -91,7 +92,7 @@ class _FavoriSayfaState extends State<FavoriSayfa> {
                               ),
                               child: const Icon(Icons.bookmark, color: Colors.white),
                             ),
-                            title: Text(recipe.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                            title: Text(recipe.name, style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

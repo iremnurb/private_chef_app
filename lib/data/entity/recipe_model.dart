@@ -46,27 +46,28 @@ class RecipeModel {
   factory RecipeModel.fromJson(Map<String, dynamic> json) {
     return RecipeModel(
       id: json['id'],
-      name: json['Name'],
-      cookTime: json['CookTime'],
-      prepTime: json['PrepTime'],
-      totalTime: json['TotalTime'],
-      recipeIngredientParts: json['RecipeIngredientParts'],
-      calories: json['Calories'].toDouble(),
-      fatContent: json['FatContent'].toDouble(),
-      saturatedFatContent: json['SaturatedFatContent'].toDouble(),
-      cholesterolContent: json['CholesterolContent'].toDouble(),
-      sodiumContent: json['SodiumContent'].toDouble(),
-      carbohydrateContent: json['CarbohydrateContent'].toDouble(),
-      fiberContent: json['FiberContent'].toDouble(),
-      sugarContent: json['SugarContent'].toDouble(),
-      proteinContent: json['ProteinContent'].toDouble(),
-      recipeInstructions: json['RecipeInstructions'],
-      mealType: json['MealType'],
-      recipeIngredientsQuantities: json['RecipeIngredientsQuantities'],
+      name: json['Name'] ?? '',
+      cookTime: json['CookTime'] ?? '',
+      prepTime: json['PrepTime'] ?? '',
+      totalTime: json['TotalTime'] ?? '',
+      recipeIngredientParts: json['RecipeIngredientParts'] ?? '',
+      calories: (json['Calories'] ?? 0).toDouble(),
+      fatContent: (json['FatContent'] ?? 0).toDouble(),
+      saturatedFatContent: (json['SaturatedFatContent'] ?? 0).toDouble(),
+      cholesterolContent: (json['CholesterolContent'] ?? 0).toDouble(),
+      sodiumContent: (json['SodiumContent'] ?? 0).toDouble(),
+      carbohydrateContent: (json['CarbohydrateContent'] ?? 0).toDouble(),
+      fiberContent: (json['FiberContent'] ?? 0).toDouble(),
+      sugarContent: (json['SugarContent'] ?? 0).toDouble(),
+      proteinContent: (json['ProteinContent'] ?? 0).toDouble(),
+      recipeInstructions: json['RecipeInstructions'] ?? '',
+      mealType: json['MealType'] ?? '',
+      recipeIngredientsQuantities: json['RecipeIngredientsQuantities'] ?? '',
       image: json['Image'],
       missingIngredients: json['missingIngredients'] != null
           ? List<String>.from(json['missingIngredients'])
           : null,
     );
   }
+
 }

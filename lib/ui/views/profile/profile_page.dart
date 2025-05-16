@@ -1,6 +1,7 @@
 import 'package:diyet/ui/views/home/ana_sayfa.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../data/entity/user_model.dart';
 import '../../cubit/login_cubit.dart';
 import '../../cubit/profile_cubit.dart';
@@ -61,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await context.read<ProfileCubit>().updateProfile(updatedUser);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile updated successfully')),
+       SnackBar(content: Text('Profile updated successfully',style: GoogleFonts.poppins(),)),
     );
 
     setState(() {});
@@ -74,7 +75,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Profile", style: TextStyle(fontWeight: FontWeight.bold)),
+        title:  Text("Profile", style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: primaryColor,
         elevation: 0,
@@ -116,9 +117,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
+                child:  Text(
                   "SUBMIT",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
                 ),
               ),
             ),
@@ -168,7 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
         alignment: Alignment.center,
         child: Text(
           value,
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             color: isSelected ? Colors.white : Colors.black87,
             fontWeight: FontWeight.bold,
           ),

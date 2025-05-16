@@ -2,6 +2,7 @@ import 'package:diyet/ui/views/diyet/veri_alma_gun_sayfa.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:diyet/ui/cubit/veri_alma_hareket_sayfa_cubit.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class VeriAlmaHareketSayfa extends StatefulWidget {
   @override
@@ -29,13 +30,13 @@ class _VeriAlmaHareketSayfaState extends State<VeriAlmaHareketSayfa> {
                   child: GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: Container(
-                      width: 50,
-                      height: 50,
+                      width: 40,
+                      height: 40,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.black, width: 5),
                       ),
-                      child: const Icon(Icons.arrow_back, color: Colors.black, size: 32, weight: 5),
+                      child: const Icon(Icons.arrow_back, color: Colors.black, size: 28, weight: 5),
                     ),
                   ),
                 ),
@@ -45,13 +46,13 @@ class _VeriAlmaHareketSayfaState extends State<VeriAlmaHareketSayfa> {
 
               /// **Başlık**
               RichText(
-                text: const TextSpan(
+                text:  TextSpan(
                   text: "Your ",
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                  style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
                   children: [
                     TextSpan(
                       text: "activity plan",
-                      style: TextStyle(color: Color(0xFFD0A890)),
+                      style: GoogleFonts.poppins(color: Color(0xFFD0A890)),
                     ),
                   ],
                 ),
@@ -86,9 +87,9 @@ class _VeriAlmaHareketSayfaState extends State<VeriAlmaHareketSayfa> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   alignment: Alignment.center,
-                  child: const Text(
+                  child:  Text(
                     "Next",
-                    style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.poppins(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -127,7 +128,7 @@ class _VeriAlmaHareketSayfaState extends State<VeriAlmaHareketSayfa> {
             /// **Seçenek Metni**
             Text(
               title,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: isSelected ? Colors.black : Colors.grey.shade700,

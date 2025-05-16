@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CookingStyleSelectionPage extends StatefulWidget {
   final List<String> selectedMealTypes;
@@ -34,13 +35,13 @@ class _CookingStyleSelectionPageState extends State<CookingStyleSelectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cooking Style"),
+        title:  Text("Cooking Style", style: GoogleFonts.poppins()),
         backgroundColor: const Color(0xFFBF7E04),
       ),
       body: Column(
         children: [
           const SizedBox(height: 16),
-          const Text("Choose a cooking style"),
+           Text("Choose a cooking style",style: GoogleFonts.poppins(),),
           Expanded(
             child: ListView.builder(
               itemCount: cookingStyles.length,
@@ -64,7 +65,7 @@ class _CookingStyleSelectionPageState extends State<CookingStyleSelectionPage> {
             child: ElevatedButton(
               onPressed: _onNext,
               style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFBF7E04)),
-              child: const Text("Next", style: TextStyle(color: Colors.white)),
+              child:  Text("Next", style: GoogleFonts.poppins(color: Colors.white)),
             ),
           )
         ],

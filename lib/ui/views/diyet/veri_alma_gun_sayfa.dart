@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:diyet/ui/cubit/veri_alma_gun_sayfa_cubit.dart';
 import 'package:diyet/ui/cubit/veri_alma_kilo_sayfa_cubit.dart';
 import 'package:diyet/ui/cubit/veri_alma_hareket_sayfa_cubit.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VeriAlmaGunSayfa extends StatefulWidget {
@@ -44,13 +45,13 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
           const SizedBox(height: 80),
 
           RichText(
-            text: const TextSpan(
+            text:  TextSpan(
               text: "Diet ",
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+              style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
               children: [
                 TextSpan(
                   text: "duration",
-                  style: TextStyle(color: Color(0xFFD0A890)),
+                  style: GoogleFonts.poppins(color: Color(0xFFD0A890)),
                 ),
               ],
             ),
@@ -58,10 +59,10 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
 
           const SizedBox(height: 30),
 
-          const Text(
+           Text(
             "How many days will your diet last?",
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
@@ -96,7 +97,7 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
                     "$days",
-                    style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                    style:  GoogleFonts.poppins(fontSize: 32, fontWeight: FontWeight.bold),
                   ),
                 ),
                 IconButton(
@@ -117,14 +118,14 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
           const SizedBox(height: 30),
 
 
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Text.rich(
-              TextSpan(
+               TextSpan(
                 children: [
                   TextSpan(
                     text: "Note:  ",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       color: Color(0xFF8A9B0F), // Next butonunun rengi
                       fontWeight: FontWeight.bold,
                     ),
@@ -132,14 +133,14 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
                   TextSpan(
                     text:
                     "Creating a 500 calorie deficit per day is the healthiest approach. Higher deficits can be risky. Please choose your diet duration accordingly.",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       color: Colors.black54,
                     ),
                   ),
                 ],
               ),
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14),
+              style: GoogleFonts.poppins(fontSize: 14),
             ),
           ),
 
@@ -171,9 +172,9 @@ class _VeriAlmaGunSayfaState extends State<VeriAlmaGunSayfa> {
                 borderRadius: BorderRadius.circular(12),
               ),
               alignment: Alignment.center,
-              child: const Text(
+              child: Text(
                 "Next",
-                style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
           ),

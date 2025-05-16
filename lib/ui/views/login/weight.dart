@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../home/ana_sayfa.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/sign_up_cubit.dart';
@@ -43,19 +44,19 @@ class _WeightState extends State<Weight> {
                 ),
               ),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 50),
 
             // Başlık
             Align(
               alignment: Alignment.center,
               child: RichText(
-                text: const TextSpan(
+                text:  TextSpan(
                   text: "Your ",
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                  style: GoogleFonts.poppins(fontSize: 34, fontWeight: FontWeight.bold, color: Colors.black87),
                   children: [
                     TextSpan(
                       text: "current weight",
-                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
+                      style: GoogleFonts.poppins(fontSize: 34, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
                     ),
                   ],
                 ),
@@ -90,7 +91,7 @@ class _WeightState extends State<Weight> {
                 alignment: Alignment.center,
                 child: Text(
                   selectedWeight.toStringAsFixed(0),
-                  style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                  style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
                 ),
               ),
             ),
@@ -150,16 +151,16 @@ class _WeightState extends State<Weight> {
 
                     // Başarılı mesaj
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Congrats! You are registered and logged in"),
+                       SnackBar(
+                        content: Text("Congrats! You are registered and logged in",style: GoogleFonts.poppins(),),
                         duration: Duration(seconds: 3),
                       ),
                     );
 
               },
-              child: const Text(
+              child:  Text(
                 "Finish",
-                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
 
@@ -187,7 +188,7 @@ class _WeightState extends State<Weight> {
         ),
         child: Text(
           unit,
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: isSelected ? Colors.white : Colors.grey[700],

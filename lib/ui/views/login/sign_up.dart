@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../cubit/sign_up_cubit.dart';
 import 'gender.dart';
 import 'login.dart';
@@ -29,9 +30,9 @@ class SignUp extends StatelessWidget {
               ),
               alignment: Alignment.bottomLeft,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 75),
-              child: const Text(
+              child:  Text(
                 "Sign Up",
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -53,19 +54,19 @@ class SignUp extends StatelessWidget {
                   const SizedBox(height: 14),
 
                   // Terms and Privacy
-                  const Text.rich(
+                   Text.rich(
                     TextSpan(
                       text: "By continuing you agree to our ",
-                      style: TextStyle(fontSize: 13, color: Colors.black),
+                      style: GoogleFonts.poppins(fontSize: 13, color: Colors.black),
                       children: [
                         TextSpan(
                           text: "Terms of Service",
-                          style: TextStyle(color: Color(0xFF7C8C03), fontWeight: FontWeight.bold),
+                          style: GoogleFonts.poppins(color: Color(0xFF7C8C03), fontWeight: FontWeight.bold),
                         ),
-                        TextSpan(text: " and "),
+                        TextSpan(text: " and ",style: GoogleFonts.poppins()),
                         TextSpan(
                           text: "Privacy Policy.",
-                          style: TextStyle(color: Color(0xFF7C8C03), fontWeight: FontWeight.bold),
+                          style: GoogleFonts.poppins(color: Color(0xFF7C8C03), fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -102,9 +103,9 @@ class SignUp extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text(
+                child:  Text(
                   "Sign Up",
-                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -122,13 +123,13 @@ class SignUp extends StatelessWidget {
                 );
               },
               child: RichText(
-                text: const TextSpan(
+                text:  TextSpan(
                   text: "Already have an account? ",
-                  style: TextStyle(color: Colors.black, fontSize: 14),
+                  style: GoogleFonts.poppins(color: Colors.black, fontSize: 14),
                   children: [
                     TextSpan(
                       text: "Log in",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: Color(0xFF7C8C03),
                         fontWeight: FontWeight.bold,
                       ),
@@ -152,7 +153,7 @@ class SignUp extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: GoogleFonts.poppins(
               fontSize: 14,
               fontWeight: FontWeight.bold,
             ),
@@ -162,7 +163,7 @@ class SignUp extends StatelessWidget {
             obscureText: obscure,
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: const TextStyle(color: Colors.grey),
+              hintStyle: GoogleFonts.poppins(color: Colors.grey),
               border: const UnderlineInputBorder(),
             ),
           ),

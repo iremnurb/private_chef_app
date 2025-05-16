@@ -3,6 +3,7 @@ import 'package:diyet/data/entity/diet_model.dart';
 import 'package:diyet/data/repo/repository.dart';
 import 'package:diyet/ui/views/diyet/diyet_listem_sayfa.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:diyet/data/services/notification_service.dart';
 import 'package:diyet/data/entity/diyet_list_model.dart';
@@ -171,13 +172,13 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Confirmation", style: TextStyle(fontWeight: FontWeight.bold)),
-          content: const Text("Are you sure you want to create your diyet list?",
-              style: TextStyle(fontSize: 18)),
+          title:  Text("Confirmation", style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
+          content:  Text("Are you sure you want to create your diyet list?",
+              style: GoogleFonts.poppins(fontSize: 18)),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("NO", style: TextStyle(color: Color(0xFF8A9B0F))),
+              child:  Text("NO", style: GoogleFonts.poppins(color: Color(0xFF8A9B0F))),
             ),
             TextButton(
               onPressed: () async {
@@ -239,7 +240,7 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
 
                 _startLoading();
               },
-              child: const Text("YES", style: TextStyle(color: Color(0xFF8A9B0F), fontWeight: FontWeight.bold)),
+              child:  Text("YES", style: GoogleFonts.poppins(color: Color(0xFF8A9B0F), fontWeight: FontWeight.bold)),
             ),
           ],
         );
@@ -283,13 +284,13 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
         ),
         const SizedBox(height: 60),
         RichText(
-          text: const TextSpan(
+          text:  TextSpan(
             text: "Enter your ",
-            style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+            style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
             children: [
               TextSpan(
                 text: "meal times",
-                style: TextStyle(color: Color(0xFFD0A890)),
+                style: GoogleFonts.poppins(color: Color(0xFFD0A890)),
               ),
             ],
           ),
@@ -311,9 +312,9 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
               borderRadius: BorderRadius.circular(12),
             ),
             alignment: Alignment.center,
-            child: const Text(
+            child:  Text(
               "Create",
-              style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+              style: GoogleFonts.poppins(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ),
         ),
@@ -328,11 +329,11 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
       children: [
         Image.asset('assets/images/salad.png', width: 120, height: 120),
         const SizedBox(height: 30),
-        const Text('Preparing your recipes', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+         Text('Preparing your recipes', style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold)),
         const SizedBox(height: 20),
-        const Text(
+         Text(
           '  Setting up your nutrition plan and  \n analyzing your goals...',
-          style: TextStyle(fontSize: 16, color: Colors.grey),
+          style: GoogleFonts.poppins(fontSize: 16, color: Colors.grey),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 20),
@@ -346,7 +347,7 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
         ),
         const SizedBox(height: 10),
         Text('${(_progress * 100).toInt()}%',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFABD904))),
+            style:  GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFABD904))),
       ],
     );
   }
@@ -365,12 +366,12 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(mealType,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade700)),
+                style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade700)),
             Text(
               mealTimes[index] != null
                   ? "${mealTimes[index]!.hour.toString().padLeft(2, '0')}:${mealTimes[index]!.minute.toString().padLeft(2, '0')}"
                   : "--:--",
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+              style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
             ),
           ],
         ),

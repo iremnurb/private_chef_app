@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../cubit/ogun_detay_cubit.dart';
 import "package:diyet/data/entity/meal_detail_model.dart";
 import 'package:diyet/data/repo/repository.dart';
@@ -8,7 +9,8 @@ import '../../cubit/login_cubit.dart';
 
 class OgunDetaySayfa extends StatefulWidget {
   final int mealId;
-  const OgunDetaySayfa({Key? key, required this.mealId}) : super(key: key);
+  final Color? themeColor;
+  const OgunDetaySayfa({Key? key, required this.mealId,this.themeColor,}) : super(key: key);
 
   @override
   State<OgunDetaySayfa> createState() => _OgunDetaySayfaState();
@@ -36,6 +38,8 @@ class _OgunDetaySayfaState extends State<OgunDetaySayfa> {
 
   @override
   Widget build(BuildContext context) {
+   // final Color color = themeColor ?? const Color(0xFF7C8C03); // varsayılan renk
+
     return BlocProvider(
       create: (_) => OgunDetayCubit(DietRepository())..fetchMeal(widget.mealId),
       child: BlocBuilder<OgunDetayCubit, OgunDetayState>(
@@ -104,7 +108,7 @@ class _OgunDetaySayfaState extends State<OgunDetaySayfa> {
                               Expanded(
                                 child: Text(
                                   meal.name,
-                                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                                  style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
@@ -158,7 +162,7 @@ class _OgunDetaySayfaState extends State<OgunDetaySayfa> {
                                   children: [
                                     Flexible(
                                       child: Text(item,
-                                          style: const TextStyle(fontWeight: FontWeight.w500)),
+                                          style: GoogleFonts.poppins(fontWeight: FontWeight.w500)),
                                     ),
                                   ],
                                 ),
@@ -179,11 +183,11 @@ class _OgunDetaySayfaState extends State<OgunDetaySayfa> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                color: const Color(0xFFB8CB1F),
+                                color: widget.themeColor,
                               ),
-                              child: const Text(
+                              child:  Text(
                                 'Got it!',
-                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
@@ -211,13 +215,13 @@ class _OgunDetaySayfaState extends State<OgunDetaySayfa> {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFFB8CB1F) : Colors.transparent,
+            color: isSelected ? widget.themeColor: Colors.transparent,
             borderRadius: BorderRadius.circular(16),
           ),
           alignment: Alignment.center,
           child: Text(
             text,
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               color: isSelected ? Colors.white : Colors.black87,
               fontWeight: FontWeight.bold,
             ),
@@ -233,7 +237,7 @@ class _OgunDetaySayfaState extends State<OgunDetaySayfa> {
       children: [
         Icon(icon, size: 20),
         const SizedBox(width: 6),
-        Text(label, style: const TextStyle(fontSize: 14)),
+        Text(label, style: GoogleFonts.poppins(fontSize: 14)),
       ],
     );
   }

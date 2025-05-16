@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'veri_alma_kilo_sayfa.dart'; // yönlendirilecek hedef sayfa
 
 class DiyetIntroSayfa extends StatelessWidget {
@@ -20,19 +21,19 @@ class DiyetIntroSayfa extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+               Text(
                 "Welcome to Diet Mode!",
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
               ),
               const SizedBox(height: 40),
-              const Text(
+               Text(
                 "This is not a strict or restrictive diet program. Instead, it’s a flexible and supportive approach that helps you track your meals, build healthier eating habits, and gradually move towards your weight goals.\n\n"
                     "Think of it as a guide to understand your eating patterns and make more conscious food choices — without the pressure. Whether your goal is to lose weight or simply eat better, this process will help you stay consistent and feel in control of your journey.",
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 16,
                   height: 1.6,
                   color: Colors.black87,
@@ -55,11 +56,11 @@ class DiyetIntroSayfa extends StatelessWidget {
                       MaterialPageRoute(builder: (_) => VeriAlmaKiloSayfa()),
                     );
                   },
-                  child: const Text(
+                  child:  Text(
                     "Got it!",
-                    style: TextStyle(
+                    style:GoogleFonts.poppins (
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                       color: Colors.black,
                     ),
                   ),

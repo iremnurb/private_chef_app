@@ -2,6 +2,7 @@ import 'package:diyet/ui/views/diyet/diyet_intro_sayfa.dart';
 import 'package:diyet/ui/views/diyet/veri_alma_kilo_sayfa.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../data/repo/repository.dart';
 import '../../cubit/diyet_listem_sayfa_cubit.dart';
 import 'package:diyet/ui/views/diyet/gun_detay_sayfa.dart';
@@ -54,9 +55,9 @@ class DiyetListemUI extends StatelessWidget {
               Positioned(
                 bottom: 20,
                 left: 20,
-                child: const Text(
+                child:  Text(
                   "Diet List",
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF8A9B0F),
@@ -111,22 +112,24 @@ class DiyetListemUI extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const Text("Diyet Tamamlandı"),
-                            content: const Column(
+                            title:  Text("Diyet Tamamlandı",style: GoogleFonts.poppins(fontSize: 13, color: Colors.black),),
+                            content:  Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text("Diyet süreniz sona erdi. Yeni bir diyet listesi oluşturmak ister misiniz?"),
+                                Text("Diyet süreniz sona erdi. Yeni bir diyet listesi oluşturmak ister misiniz?",
+                                  style: GoogleFonts.poppins(fontSize: 13, color: Colors.black),),
+
                                 SizedBox(height: 12),
                                 Text(
                                   "Lütfen profilinizdeki kilonuzu güncellemeyi unutmayın.",
-                                  style: TextStyle(fontSize: 13, color: Colors.grey),
+                                  style: GoogleFonts.poppins(fontSize: 13, color: Colors.grey),
                                 ),
                               ],
                             ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text("İptal"),
+                                child:  Text("İptal",style: GoogleFonts.poppins(fontSize: 13, color: Colors.black)),
                               ),
                               ElevatedButton(
                                 onPressed: () {
@@ -137,7 +140,7 @@ class DiyetListemUI extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                child: const Text("Yeni Diyet Oluştur"),
+                                child:  Text("Yeni Diyet Oluştur",style: GoogleFonts.poppins(fontSize: 13, color: Colors.black),),
                               ),
                             ],
                           );
@@ -145,7 +148,7 @@ class DiyetListemUI extends StatelessWidget {
                       );
                     });
 
-                    return const Center(child: Text("Diyet listesi bulunamadı."));
+                    return  Center(child: Text("Diyet listesi bulunamadı.",style: GoogleFonts.poppins(fontSize: 13, color: Colors.black),));
                   }
 
                   return ListView.builder(
@@ -181,7 +184,7 @@ class DiyetListemUI extends StatelessWidget {
                                 children: [
                                   Text(
                                     "Day ${gun.day}",
-                                    style: const TextStyle(
+                                    style:  GoogleFonts.poppins(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black87,
@@ -190,7 +193,7 @@ class DiyetListemUI extends StatelessWidget {
                                   const SizedBox(height: 6),
                                   Text(
                                     "${gun.dailyCalories} kcal",
-                                    style: const TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontSize: 14,
                                       color: Colors.grey,
                                     ),
@@ -205,7 +208,7 @@ class DiyetListemUI extends StatelessWidget {
                     },
                   );
                 } else if (state.status == DiyetListemSayfaStatus.failure) {
-                  return Center(child: Text('Error: ${state.errorMessage}'));
+                  return Center(child: Text('Error: ${state.errorMessage}',style: GoogleFonts.poppins(fontSize: 13, color: Colors.black),));
                 } else {
                   return const SizedBox();
                 }

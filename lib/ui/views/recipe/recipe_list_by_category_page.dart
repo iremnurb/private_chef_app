@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../data/entity/recipe_model.dart';
+import '../diyet/ogun_detay_sayfa.dart';
 
 class RecipeListByCategoryPage extends StatefulWidget {
   final String title;
@@ -66,21 +68,62 @@ class RecipeListByCategoryPageState extends State<RecipeListByCategoryPage> {
                   margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   elevation: 4,
-                  child: ListTile(
-                    title: Text(recipe.name,style: TextStyle(fontWeight: FontWeight.bold),),
-                    subtitle: Text("Prep: ${recipe.prepTime ?? '-'} | Cook: ${recipe.cookTime ?? '-'} | Total: ${recipe.totalTime ?? '-'}"),
-                    trailing: ElevatedButton(
-                      onPressed: () {
-                        _showDetails(context, recipe);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF7C8C03),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                      child: const Text("Check out",style: TextStyle(color: Colors.white),),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          recipe.name,
+                          style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          "Prep: ${recipe.prepTime ?? '-'} | Cook: ${recipe.cookTime ?? '-'} | Total: ${recipe.totalTime ?? '-'}",
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  _showDetails(context, recipe);
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(color: Color(0xFFBF7E04), width: 2),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                ),
+                                child:  Text("Missing Ingredients", style: GoogleFonts.poppins(color: Color(0xFFBF7E04), textStyle: TextStyle(fontSize: 13))),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => OgunDetaySayfa(mealId: recipe.id,themeColor: Color(0xFFBF7E04),),
+                                    ),
+                                  );
+                                },
+                               style: OutlinedButton.styleFrom(
+                                    side: const BorderSide(color: Color(0xFFBF7E04), width: 2),
+                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  ),
+
+                                child:  Text("Show Details", style: GoogleFonts.poppins(color: Color(0xFFBF7E04),textStyle: TextStyle(fontSize: 13))),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 );
+
+
               },
             ),
           ),
@@ -105,12 +148,12 @@ class RecipeListByCategoryPageState extends State<RecipeListByCategoryPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(recipe.name, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              Text(recipe.name, style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
-              const Text("Instructions:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Text(recipe.recipeInstructions ?? "-", style: const TextStyle(fontSize: 14)),
+              //const Text("Instructions:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              //Text(recipe.recipeInstructions ?? "-", style: const TextStyle(fontSize: 14)),
               const SizedBox(height: 12),
-              const Text("Ingredients:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+               Text("Ingredients:", style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold)),
               ...ingredients.map((i) => ListTile(
                 title: Text(i),
                 leading: missing.map((e) => e.toLowerCase()).contains(i.toLowerCase())
@@ -126,7 +169,7 @@ class RecipeListByCategoryPageState extends State<RecipeListByCategoryPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                   ),
-                  child: const Text("Close",style: TextStyle(color: Colors.white),),
+                  child:  Text("Close",style: GoogleFonts.poppins(color: Colors.white),),
                 ),
               ),
             ],

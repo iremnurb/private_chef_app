@@ -4,6 +4,7 @@ import 'package:diyet/ui/views/login/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../cubit/sign_up_cubit.dart';
 
 class Height extends StatefulWidget {
@@ -47,17 +48,17 @@ class _HeightState extends State<Height> {
             Align(
               alignment: Alignment.center,
               child: RichText(
-                text: const TextSpan(
+                text:  TextSpan(
                   text: "How ",
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                  style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
                   children: [
                     TextSpan(
                       text: "tall",
-                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
+                      style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
                     ),
                     TextSpan(
                       text: " are you?",
-                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                      style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
                     ),
                   ],
                 ),
@@ -78,7 +79,7 @@ class _HeightState extends State<Height> {
                 alignment: Alignment.center,
                 child: Text(
                   "$selectedHeight cm",
-                  style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                  style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
                 ),
               ),
             ),
@@ -101,7 +102,7 @@ class _HeightState extends State<Height> {
                   return Center(
                     child: Text(
                       "$heightValue cm",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: heightValue == selectedHeight ? 24 : 18,
                         fontWeight: heightValue == selectedHeight ? FontWeight.bold : FontWeight.normal,
                         color: heightValue == selectedHeight ? Colors.black87 : Colors.grey,
@@ -137,9 +138,9 @@ class _HeightState extends State<Height> {
                 );
                 print("Seçilen Boy: $selectedHeight cm");
               },
-              child: const Text(
+              child:  Text(
                 "Next",
-                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
 

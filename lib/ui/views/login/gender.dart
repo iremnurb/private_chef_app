@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../cubit/sign_up_cubit.dart';
 import 'age.dart';
 
@@ -45,17 +46,17 @@ class _GenderState extends State<Gender> {
             RichText(
               text: TextSpan(
                 text: "  What is your ",
-                style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                style: GoogleFonts.poppins(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black87),
                 children: [
                   TextSpan(
                     text: "gender?",
-                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
+                    style: GoogleFonts.poppins(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 40),
+            const SizedBox(height: 70),
 
             // Erkek ve Kadın Seçenekleri
             Row(
@@ -91,9 +92,9 @@ class _GenderState extends State<Gender> {
                   ),
                 );
               },
-              child: const Text(
+              child:  Text(
                 "Next",
-                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
 
@@ -128,7 +129,7 @@ class _GenderState extends State<Gender> {
             const SizedBox(height: 10),
             Text(
               gender,
-              style: const TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,

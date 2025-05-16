@@ -4,6 +4,7 @@ import 'package:diyet/ui/views/home/ana_sayfa.dart';
 import 'package:diyet/ui/views/login/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../cubit/login_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // 🔹 Yukarıya ekle
 
@@ -40,12 +41,12 @@ class _LoginState extends State<Login> {
               ),
               alignment: Alignment.bottomLeft,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 65),
-              child: const Column(
+              child:  Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Log in",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -54,7 +55,7 @@ class _LoginState extends State<Login> {
                   SizedBox(height: 5),
                   Text(
                     "Enter your email and password",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 12,
                       color: Colors.grey,
                     ),
@@ -73,7 +74,7 @@ class _LoginState extends State<Login> {
                 children: [
                   Text(
                     "Email",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
@@ -84,12 +85,12 @@ class _LoginState extends State<Login> {
                     controller: emailController,
                     decoration: InputDecoration(
                       hintText: "Enter your email",
-                      hintStyle: TextStyle(color: Colors.grey[500]),
+                      hintStyle: GoogleFonts.poppins(color: Colors.grey[500]),
                       border: InputBorder.none,
                       errorText: errorMessage,
                     ),
                     keyboardType: TextInputType.emailAddress,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const Divider(color: Colors.black, thickness: 1),
                   const SizedBox(height: 16),
@@ -97,7 +98,7 @@ class _LoginState extends State<Login> {
                   // Şifre Girişi
                   Text(
                     "Password",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
@@ -109,7 +110,7 @@ class _LoginState extends State<Login> {
                     obscureText: !_isPasswordVisible,
                     decoration: InputDecoration(
                       hintText: "Enter your password",
-                      hintStyle: TextStyle(color: Colors.grey[500]),
+                      hintStyle: GoogleFonts.poppins(color: Colors.grey[500]),
                       border: InputBorder.none,
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -123,7 +124,7 @@ class _LoginState extends State<Login> {
                         },
                       ),
                     ),
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const Divider(color: Colors.black, thickness: 1),
 
@@ -134,9 +135,9 @@ class _LoginState extends State<Login> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {},
-                      child: const Text(
+                      child:  Text(
                         "Forgot Password?",
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                        style: GoogleFonts.poppins(color: Colors.grey, fontSize: 14),
                       ),
                     ),
                   ),
@@ -189,9 +190,9 @@ class _LoginState extends State<Login> {
             });
             }
             },
-                child: const Text(
+                child:  Text(
                   "Log In",
-                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -213,13 +214,13 @@ class _LoginState extends State<Login> {
                 );
               },
               child: RichText(
-                text: const TextSpan(
+                text:  TextSpan(
                   text: "Don’t have an account? ",
-                  style: TextStyle(color: Colors.black, fontSize: 14),
+                  style: GoogleFonts.poppins(color: Colors.black, fontSize: 14),
                   children: [
                     TextSpan(
                       text: "Sign up",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: Color(0xFF7C8C03),
                         fontWeight: FontWeight.bold,
                       ),

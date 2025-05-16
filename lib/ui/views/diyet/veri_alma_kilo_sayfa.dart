@@ -2,6 +2,7 @@ import 'package:diyet/ui/views/diyet/veri_alma_hareket_sayfa.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:diyet/ui/cubit/veri_alma_kilo_sayfa_cubit.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class VeriAlmaKiloSayfa extends StatefulWidget {
   @override
@@ -44,13 +45,13 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
 
           // Başlık
           RichText(
-            text: const TextSpan(
+            text:  TextSpan(
               text: "Your ",
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+              style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
               children: [
                 TextSpan(
                   text: "target weight",
-                  style: TextStyle(color: Color(0xFFD0A890)),
+                  style: GoogleFonts.poppins(color: Color(0xFFD0A890)),
                 ),
               ],
             ),
@@ -59,9 +60,9 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
           const SizedBox(height: 20),
 
           // Sadece "kg" yazısı
-          const Text(
+           Text(
             "kg",
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.black54,
@@ -79,7 +80,7 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
             ),
             child: Text(
               "$weight",
-              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.black87),
+              style: GoogleFonts.poppins(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
           ),
 
@@ -101,7 +102,7 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
                 builder: (context, index) {
                   return Text(
                     "${30 + index}",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 24,
                       fontWeight: weight == (30 + index) ? FontWeight.bold : FontWeight.normal,
                       color: weight == (30 + index) ? Colors.black87 : Colors.grey,
@@ -136,9 +137,9 @@ class _VeriAlmaKiloSayfaState extends State<VeriAlmaKiloSayfa> {
                 borderRadius: BorderRadius.circular(12),
               ),
               alignment: Alignment.center,
-              child: const Text(
+              child:  Text(
                 "Next",
-                style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
           ),

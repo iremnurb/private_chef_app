@@ -1,6 +1,7 @@
 
 import 'package:diyet/ui/views/login/sign_up.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'login.dart';
 
@@ -26,10 +27,10 @@ class IlkSayfa extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                 Text(
                   "Welcome to\nPrivate Chef",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 42,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -51,18 +52,18 @@ class IlkSayfa extends StatelessWidget {
                         builder: (context) => Login(),
                       ),
                     );                  },
-                  child: const Text("Get Started",
-                  style: TextStyle(color: Colors.white , fontSize: 16, fontWeight: FontWeight.bold)),
+                  child:  Text("Get Started",
+                  style: GoogleFonts.poppins(color: Colors.white , fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
                 const SizedBox(height: 14),
                 Row(
-                  children: const [
+                  children:  [
                     Expanded(child: Divider(color: Colors.white54, thickness: 1)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
                         "or use social sign up",
-                        style: TextStyle(color: Colors.white70),
+                        style: GoogleFonts.poppins(color: Colors.white70),
                       ),
                     ),
                     Expanded(child: Divider(color: Colors.white54, thickness: 1)),
@@ -89,9 +90,9 @@ class IlkSayfa extends StatelessWidget {
                 );
               },
               child: RichText(
-                text: const TextSpan(
+                text:  TextSpan(
                   text: "Don't you have an account? ",
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -99,7 +100,7 @@ class IlkSayfa extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: "Sign Up",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
 
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline, // Altı çizili
@@ -133,7 +134,7 @@ class IlkSayfa extends StatelessWidget {
           const SizedBox(width: 10),
           Text(
             text,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold),
           ),
         ],
       ),

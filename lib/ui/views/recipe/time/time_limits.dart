@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:diyet/ui/views/recipe/recipe_results_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../cubit/recipe_cubit.dart';
 
@@ -46,7 +47,7 @@ class _TimeLimitsState extends State<TimeLimits> {
     final totalMinutes = (_hours * 60) + _minutes;
     if (totalMinutes == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter a valid time.")),
+         SnackBar(content: Text("Please enter a valid time.",style: GoogleFonts.poppins(),)),
       );
       return;
     }
@@ -143,11 +144,11 @@ class _TimeLimitsState extends State<TimeLimits> {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: RichText(
         textAlign: TextAlign.center,
-        text: const TextSpan(
+        text:  TextSpan(
           children: [
             TextSpan(
               text: 'Enter your ',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 color: Colors.black,
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -155,7 +156,7 @@ class _TimeLimitsState extends State<TimeLimits> {
             ),
             TextSpan(
               text: 'time limit',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 color: Color(0xFFC9A18A),
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -187,7 +188,7 @@ class _TimeLimitsState extends State<TimeLimits> {
         ),
         child: Text(
           '${_hours.toString().padLeft(2, '0')} : ${_minutes.toString().padLeft(2, '0')}',
-          style: const TextStyle(
+          style: GoogleFonts.poppins(
             color: Colors.black87,
             fontSize: 32,
             fontWeight: FontWeight.bold,
@@ -204,7 +205,7 @@ class _TimeLimitsState extends State<TimeLimits> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              title: const Text('Select Time Limit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+              title:  Text('Select Time Limit', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 18),),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -214,7 +215,7 @@ class _TimeLimitsState extends State<TimeLimits> {
                       children: [
                         Column(
                           children: [
-                            const Text("Hours", style: TextStyle(fontSize: 14)),
+                             Text("Hours", style: GoogleFonts.poppins(fontSize: 14)),
                             IconButton(
                               icon: const Icon(Icons.arrow_drop_up),
                               onPressed: () {
@@ -246,7 +247,7 @@ class _TimeLimitsState extends State<TimeLimits> {
                         const SizedBox(width: 20),
                         Column(
                           children: [
-                            const Text("Minutes", style: TextStyle(fontSize: 14)),
+                             Text("Minutes", style: GoogleFonts.poppins(fontSize: 14)),
                             IconButton(
                               icon: const Icon(Icons.arrow_drop_up),
                               onPressed: () {
@@ -288,7 +289,7 @@ class _TimeLimitsState extends State<TimeLimits> {
                     Navigator.of(context).pop();
                     setState(() {});
                   },
-                  child: const Text('OK', style: TextStyle(color: Color(0xFFBF7E04)),),
+                  child:  Text('OK', style: GoogleFonts.poppins(color: Color(0xFFBF7E04)),),
                 ),
               ],
             );
@@ -310,17 +311,17 @@ class _TimeLimitsState extends State<TimeLimits> {
           fit: BoxFit.contain,
         ),
         const SizedBox(height: 30),
-        const Text(
+         Text(
           'Preparing your recipes',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 20),
-        const Text(
+         Text(
           'Enter the time you have for cooking and choose  \n your recipe..',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 16,
             color: Colors.grey,
           ),
@@ -338,7 +339,7 @@ class _TimeLimitsState extends State<TimeLimits> {
         const SizedBox(height: 10),
         Text(
           '${(_progress * 100).toInt()}%',
-          style: const TextStyle(
+          style:  GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Color(0xFFF2B33D),
@@ -360,9 +361,9 @@ class _TimeLimitsState extends State<TimeLimits> {
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        child: const Text(
+        child:  Text(
           'Search',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,

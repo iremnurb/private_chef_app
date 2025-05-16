@@ -61,7 +61,7 @@ class _RecipeResultsPageState extends State<RecipeResultsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Recipe Results"),
+        title:  Text("Recipe Results", style: GoogleFonts.poppins(),),
         backgroundColor: const Color(0xFFBF7E04),
       ),
       body: _isLoading
@@ -122,7 +122,7 @@ class _RecipeResultsPageState extends State<RecipeResultsPage> {
                           children: [
                             Text(
                               mealType,
-                              style: const TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -130,7 +130,7 @@ class _RecipeResultsPageState extends State<RecipeResultsPage> {
                             const SizedBox(height: 4),
                             Text(
                               "${list.length} recipes available",
-                              style: const TextStyle(color: Colors.grey),
+                              style: GoogleFonts.poppins(color: Colors.grey),
                             ),
                           ],
                         ),

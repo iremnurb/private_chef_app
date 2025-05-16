@@ -1,6 +1,7 @@
 import 'package:diyet/ui/views/diyet/diyet_intro_sayfa.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../../data/entity/user_model.dart';
@@ -127,7 +128,7 @@ class AnaSayfaContent extends StatelessWidget {
                   children: [
                     Text(
                       "Hello $username!",
-                      style: const TextStyle(
+                      style:  GoogleFonts.poppins(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -145,33 +146,33 @@ class AnaSayfaContent extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
-              const Padding(
+              const SizedBox(height: 12),
+               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   "Choose a mode to start your journey!",
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: GoogleFonts.poppins(fontSize: 16, color: Colors.grey),
                 ),
               ),
               const SizedBox(height: 5),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: RichText(
-                  text: const TextSpan(
-                    text: "        Track your ",
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  text:  TextSpan(
+                    text: "   Track your ",
+                    style: GoogleFonts.poppins(fontSize: 16, color: Colors.grey),
                     children: [
                       TextSpan(
                         text: "diet",
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFABD904)),
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Color(0xFFABD904)),
                       ),
                       TextSpan(
                         text: " or explore delicious ",
-                        style: TextStyle(color: Colors.grey),
+                        style: GoogleFonts.poppins(color: Colors.grey),
                       ),
                       TextSpan(
                         text: "recipes.",
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFF2B33D)),
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Color(0xFFF2B33D)),
                       ),
                     ],
                   ),
@@ -183,7 +184,7 @@ class AnaSayfaContent extends StatelessWidget {
                 child: Stack(
                   children: [
                     Positioned(
-                      left: 0,
+                      left: -40,
                       top: 60,
                       child: _buildModeButton(
                         context,
@@ -197,8 +198,8 @@ class AnaSayfaContent extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      right: 0,
-                      top: 180,
+                      right: -30,
+                      top: 200,
                       child: _buildModeButton(
                         context,
                         "Diet Mode",
@@ -221,20 +222,23 @@ class AnaSayfaContent extends StatelessWidget {
       BuildContext context, String text, double width, Color color, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: width,
-        height: 200,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: const BorderRadius.all(Radius.circular(30)),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 14),
+        child: Container(
+          width: width,
+          height: 200,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: const BorderRadius.all(Radius.circular(30)),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style:  GoogleFonts.poppins(
+              fontSize: 28,
+              fontWeight: FontWeight.w700,
+              color: Colors.black,
+            ),
           ),
         ),
       ),

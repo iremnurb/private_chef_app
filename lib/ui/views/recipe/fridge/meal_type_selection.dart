@@ -40,7 +40,7 @@ class _MealTypeSelectionPageState extends State<MealTypeSelectionPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color(0xFFBF7E04),
-        title: const Text("Select Meal Type"),
+        title:  Text("Select Meal Type",style: GoogleFonts.poppins(),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -101,9 +101,9 @@ class _MealTypeSelectionPageState extends State<MealTypeSelectionPage> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
+                    child:  Text(
                       "Next",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
                     ),
                   ),
                 ),

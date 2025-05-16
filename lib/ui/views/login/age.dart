@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../cubit/sign_up_cubit.dart';
 import 'height.dart';
@@ -76,13 +77,13 @@ class _AgeState extends State<Age> {
             Align(
               alignment: Alignment.center,
               child: RichText(
-                text: const TextSpan(
+                text:  TextSpan(
                   text: "Your ",
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                  style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
                   children: [
                     TextSpan(
                       text: "date of birth",
-                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
+                      style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
                     ),
                   ],
                 ),
@@ -103,7 +104,7 @@ class _AgeState extends State<Age> {
                 alignment: Alignment.center,
                 child: Text(
                   age != null ? age.toString() : "--",
-                  style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+                  style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
                 ),
               ),
             ),
@@ -130,7 +131,7 @@ class _AgeState extends State<Age> {
                         selectedDate != null
                             ? DateFormat("MMMM / dd / yyyy").format(selectedDate!)
                             : "Select your birth date",
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+                        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
                       ),
                       const Icon(Icons.calendar_today, color: Colors.black87),
                     ],
@@ -165,9 +166,9 @@ class _AgeState extends State<Age> {
                 print("Doğum Tarihi: $selectedDate");
                 print("Yaş: $age");
               },
-              child: const Text(
+              child:  Text(
                 "Next",
-                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
 
