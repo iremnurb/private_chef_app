@@ -51,13 +51,27 @@ class RecipeCubit extends Cubit<RecipeState> {
 
 
   //************************TIME LIMIT MODE****************************
-  Future<void> fetchRecipesByTimeLimit(int totalMinutes) async {
+//************************TIME LIMIT MODE + INGREDIENT FILTERS****************************
+  Future<void> fetchRecipesByTimesWithIngredients({
+    required int maxCookMinutes,
+    required int maxPrepMinutes,
+    required int maxTotalMinutes,
+    required List<String> includeIngredients,
+    required List<String> excludeIngredients,
+  }) async {
     emit(RecipeState(recipes: [], isLoading: true));
     try {
-      final recipes = await repository.fetchRecipesByTimeLimit(totalMinutes);
+      final recipes = await repository.fetchRecipesByTimes(
+        cookTime: maxCookMinutes,
+        prepTime: maxPrepMinutes,
+        totalTime: maxTotalMinutes,
+        includeIngredients: includeIngredients,
+        excludeIngredients: excludeIngredients,
+      );
       emit(RecipeState(recipes: recipes, isLoading: false));
     } catch (e) {
       emit(RecipeState(recipes: [], isLoading: false, error: e.toString()));
     }
   }
+
 }

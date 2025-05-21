@@ -57,6 +57,7 @@ class _MacrosSelectionPageState extends State<MacrosSelectionPage> {
           builder: (_) => RecipeResultsPage(
             recipes: recipes,
             selectedIngredients: widget.selectedIngredients,
+            sourcePage: "macros_selection",
           ),
         ),
       );

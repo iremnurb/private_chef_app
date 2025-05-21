@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'meal_type_selection.dart';
 
@@ -58,7 +57,8 @@ class _DolabimdaNeVarState extends State<DolabimdaNeVar> {
 
   void showIngredientsPopup(String category) {
     final allIngredients = categorizedIngredients[category] ?? [];
-    List<String> filteredIngredients = List.from(allIngredients);
+    List<String> filteredIngredients = List.from(allIngredients)..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+
     final localSelected = Set<String>();
     TextEditingController searchController = TextEditingController();
 
@@ -84,7 +84,8 @@ class _DolabimdaNeVarState extends State<DolabimdaNeVar> {
                         setPopupState(() {
                           filteredIngredients = allIngredients
                               .where((ingredient) => ingredient.toLowerCase().contains(value.toLowerCase()))
-                              .toList();
+                              .toList()
+                            ..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
                         });
                       },
                     ),
@@ -124,7 +125,7 @@ class _DolabimdaNeVarState extends State<DolabimdaNeVar> {
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                      child:  Text("Add Selected", style: GoogleFonts.poppins(color: Colors.white)),
+                      child: const Text("Add Selected", style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
@@ -132,7 +133,7 @@ class _DolabimdaNeVarState extends State<DolabimdaNeVar> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child:  Text("Close",style: GoogleFonts.poppins(),),
+                  child: const Text("Close"),
                 ),
               ],
             );
@@ -160,11 +161,11 @@ class _DolabimdaNeVarState extends State<DolabimdaNeVar> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(context),
+          _buildHeader(),
           _buildInfoMessage(),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: GridView.builder(
                 itemCount: categorizedIngredients.keys.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -237,7 +238,7 @@ class _DolabimdaNeVarState extends State<DolabimdaNeVar> {
           Expanded(
             child: Text(
               category,
-              style:  GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -257,63 +258,32 @@ class _DolabimdaNeVarState extends State<DolabimdaNeVar> {
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        child:  Text(
+        child: const Text(
           'Next',
-          style: GoogleFonts.poppins(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return SizedBox(
-      height: 110, // Header için sabit yükseklik
-      width: double.infinity,
-      child: Stack(
-        children: [
-          // Arka plan görseli
-          Positioned.fill(
-            child: Opacity(
-              opacity: 1,
-              child: Image.asset(
-                'assets/images/Rectangle.png',
-                fit: BoxFit.cover,
-              ),
-            ),
+  Widget _buildHeader() {
+    return Stack(
+      alignment: Alignment.centerLeft,
+      children: [
+        Opacity(
+          opacity: 1,
+          child: Image.asset('assets/images/Rectangle.png'),
+        ),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'What is in your fridge today?',
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black),
           ),
-
-          // Geri butonu sol üstte
-          Positioned(
-            top: 25,
-            left: 16,
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                width: 25,
-                height: 25,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.black, width: 3),
-                ),
-                child: const Icon(Icons.arrow_back, color: Colors.black, size: 16, weight: 3),
-              ),
-            ),
-          ),
-
-          // Başlık yazısı
-           Positioned(
-            bottom: 20,
-            left: 8,
-            child: Text(
-              'What is in your fridge today?',
-              style: GoogleFonts.poppins(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
-
 
 
   Widget _buildInfoMessage() {
@@ -326,9 +296,9 @@ class _DolabimdaNeVarState extends State<DolabimdaNeVar> {
           borderRadius: BorderRadius.circular(10),
         ),
         padding: const EdgeInsets.all(12),
-        child:  Text(
+        child: const Text(
           "The ingredients we assume you already have on hand are: water, salt, and pepper.",
-          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ),
     );

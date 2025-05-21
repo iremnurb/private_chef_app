@@ -1,6 +1,6 @@
 
 
-import 'package:diyet/ui/views/recipe/time/time_limits.dart';
+import 'package:diyet/ui/views/recipe/time/time_input_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -88,7 +88,7 @@ class RecipeModeAnaSayfa extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => TimeLimits()), // Fridge sayfasına yönlendirme
+                          MaterialPageRoute(builder: (context) => TimeInputPage()), // Fridge sayfasına yönlendirme
                         );
 
                       },
