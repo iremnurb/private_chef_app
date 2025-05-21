@@ -329,9 +329,9 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
       children: [
         Image.asset('assets/images/salad.png', width: 120, height: 120),
         const SizedBox(height: 30),
-         Text('Preparing your recipes', style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold)),
+        Text('Preparing your recipes', style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold)),
         const SizedBox(height: 20),
-         Text(
+        Text(
           '  Setting up your nutrition plan and  \n analyzing your goals...',
           style: GoogleFonts.poppins(fontSize: 16, color: Colors.grey),
           textAlign: TextAlign.center,
@@ -379,6 +379,7 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
     );
   }
 }
+
 
 
 

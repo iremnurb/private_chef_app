@@ -1,14 +1,12 @@
-
-
 import 'package:diyet/ui/views/home/ana_sayfa.dart';
 import 'package:diyet/ui/views/login/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../data/repo/repository.dart';
 import '../../cubit/login_cubit.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // 🔹 Yukarıya ekle
-
-
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../cubit/profile_cubit.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -29,7 +27,6 @@ class _LoginState extends State<Login> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Üst kısım (Arka plan resmi)
             Container(
               height: 200,
               width: double.infinity,
@@ -41,7 +38,7 @@ class _LoginState extends State<Login> {
               ),
               alignment: Alignment.bottomLeft,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 65),
-              child:  Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -63,10 +60,7 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // Email Girişi
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
@@ -94,8 +88,6 @@ class _LoginState extends State<Login> {
                   ),
                   const Divider(color: Colors.black, thickness: 1),
                   const SizedBox(height: 16),
-
-                  // Şifre Girişi
                   Text(
                     "Password",
                     style: GoogleFonts.poppins(
@@ -127,15 +119,12 @@ class _LoginState extends State<Login> {
                     style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const Divider(color: Colors.black, thickness: 1),
-
                   const SizedBox(height: 10),
-
-                  // Forgot Password
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {},
-                      child:  Text(
+                      child: Text(
                         "Forgot Password?",
                         style: GoogleFonts.poppins(color: Colors.grey, fontSize: 14),
                       ),
@@ -144,10 +133,7 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
-
             const SizedBox(height: 60),
-
-            // Log In Butonu
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: ElevatedButton(
@@ -160,52 +146,51 @@ class _LoginState extends State<Login> {
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 onPressed: () async {
-            if (emailController.text.isEmpty || !emailController.text.contains('@')) {
-            setState(() {
-            errorMessage = "Please enter a valid email address";
-            });
-            return;
-            }
+                  if (emailController.text.isEmpty || !emailController.text.contains('@')) {
+                    setState(() {
+                      errorMessage = "Please enter a valid email address";
+                    });
+                    return;
+                  }
 
-            await context.read<LoginCubit>().login(
-            emailController.text,
-            passwordController.text,
-            );
+                  await context.read<LoginCubit>().login(
+                    emailController.text,
+                    passwordController.text,
+                  );
 
-            // Kullanıcı bilgisi alındıktan sonra kontrol
-            final user = context.read<LoginCubit>().state;
-            if (user != null) {
-            // ✅ user.id bilgisini SharedPreferences içine kaydet
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setInt('userId', user.id as int); // ✅ Tutarlı key
-            //await prefs.setInt('user_id', user.id as int);
+                  final user = context.read<LoginCubit>().state;
+                  if (user != null) {
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setInt('userId', user.id as int);
 
-            Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => AnaSayfa()),
-            );
-            } else {
-            setState(() {
-            errorMessage = "Login failed: Incorrect email or password";
-            });
-            }
-            },
-                child:  Text(
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MultiBlocProvider(
+                          providers: [
+                            BlocProvider.value(value: context.read<LoginCubit>()),
+                            BlocProvider.value(
+                              value: context.read<ProfileCubit>()..setUser(user),
+                            ),
+                          ],
+                          child: const AnaSayfa(),
+                        ),
+                      ),
+                    );
+                  } else {
+                    setState(() {
+                      errorMessage = "Login failed: Incorrect email or password";
+                    });
+                  }
+                },
+                child: Text(
                   "Log In",
                   style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
-
-
             const SizedBox(height: 20),
-
-
-
-
             const SizedBox(height: 10),
-
-            // Signup Text
             TextButton(
               onPressed: () {
                 Navigator.push(
@@ -214,7 +199,7 @@ class _LoginState extends State<Login> {
                 );
               },
               child: RichText(
-                text:  TextSpan(
+                text: TextSpan(
                   text: "Don’t have an account? ",
                   style: GoogleFonts.poppins(color: Colors.black, fontSize: 14),
                   children: [

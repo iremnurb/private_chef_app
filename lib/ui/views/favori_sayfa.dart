@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:diyet/ui/cubit/login_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../data/entity/recipe_model.dart';
 import '../cubit/favori_sayfa_cubit.dart';
+import 'package:diyet/ui/cubit/login_cubit.dart';
 import 'diyet/ogun_detay_sayfa.dart';
-
 
 class FavoriSayfa extends StatefulWidget {
   const FavoriSayfa({Key? key}) : super(key: key);
@@ -16,6 +15,9 @@ class FavoriSayfa extends StatefulWidget {
 
 class _FavoriSayfaState extends State<FavoriSayfa> {
   String searchQuery = '';
+  String mealTypeFilter = 'All';
+
+  final List<String> filterOptions = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Snack','Dessert'];
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +26,50 @@ class _FavoriSayfaState extends State<FavoriSayfa> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 30),
-             Text(
+            Text(
               "My Foods",
               style: GoogleFonts.poppins(fontSize: 28, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
+            SizedBox(
+              height: 50,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: filterOptions.length,
+                itemBuilder: (context, index) {
+                  final filter = filterOptions[index];
+                  final isSelected = mealTypeFilter == filter;
+
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: ChoiceChip(
+                      label: Row(
+                        children: [
+                          Icon(_getIconForFilter(filter), size: 18, color: isSelected ? Colors.white : Colors.black),
+                          const SizedBox(width: 4),
+                          Text(filter),
+                        ],
+                      ),
+                      selected: isSelected,
+                      selectedColor: Color(0xFFD9BBA9),
+                      backgroundColor: Colors.grey[200],
+                      labelStyle: TextStyle(color: isSelected ? Colors.white : Colors.black),
+                      onSelected: (_) {
+                        setState(() {
+                          mealTypeFilter = filter;
+                        });
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
             Container(
               decoration: BoxDecoration(
                 color: Colors.grey[200],
@@ -64,8 +100,10 @@ class _FavoriSayfaState extends State<FavoriSayfa> {
                   } else if (state is FavoriteLoaded) {
                     final allFavorites = state.favorites;
                     final filteredFavorites = allFavorites.where((f) {
-                      final name = f.recipe.name.toLowerCase();
-                      return name.contains(searchQuery);
+                      final nameMatch = f.recipe.name.toLowerCase().contains(searchQuery);
+                      final mealMatch = mealTypeFilter == 'All' ||
+                          f.recipe.mealType?.toLowerCase() == mealTypeFilter.toLowerCase();
+                      return nameMatch && mealMatch;
                     }).toList();
 
                     if (filteredFavorites.isEmpty) {
@@ -76,23 +114,29 @@ class _FavoriSayfaState extends State<FavoriSayfa> {
                       itemCount: filteredFavorites.length,
                       itemBuilder: (context, index) {
                         final recipe = filteredFavorites[index].recipe;
+                        final imagePath =
+                            'assets/images/${recipe.mealType ?? 'default'}.png';
 
                         return Card(
-                          color: Colors.grey[200],
+                          color: Colors.grey[100],
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           margin: const EdgeInsets.symmetric(vertical: 8),
                           child: ListTile(
                             contentPadding: const EdgeInsets.all(12),
-                            leading: Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[400],
-                                borderRadius: BorderRadius.circular(6),
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.asset(
+                                imagePath,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(Icons.image_not_supported, size: 50);
+                                },
                               ),
-                              child: const Icon(Icons.bookmark, color: Colors.white),
                             ),
-                            title: Text(recipe.name, style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
+                            title: Text(recipe.name,
+                                style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -112,7 +156,7 @@ class _FavoriSayfaState extends State<FavoriSayfa> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => OgunDetaySayfa(mealId: recipe.id),
+                                  builder: (_) => OgunDetaySayfa(mealId: recipe.id,  themeColor: Color(0xFFD9BBA9)),
                                 ),
                               );
                             },
@@ -121,7 +165,6 @@ class _FavoriSayfaState extends State<FavoriSayfa> {
                       },
                     );
                   } else {
-                    // İlk yükleme için tetikle
                     context.read<FavoriSayfaCubit>().loadFavorites(userId);
                     return const SizedBox();
                   }
@@ -132,5 +175,22 @@ class _FavoriSayfaState extends State<FavoriSayfa> {
         ),
       ),
     );
+  }
+
+  IconData _getIconForFilter(String filter) {
+    switch (filter) {
+      case 'Breakfast':
+        return Icons.free_breakfast;
+      case 'Lunch':
+        return Icons.lunch_dining;
+      case 'Dinner':
+        return Icons.dinner_dining;
+      case 'Snack':
+        return Icons.cookie;
+      case 'Dessert':
+        return Icons.cruelty_free_rounded;
+      default:
+        return Icons.all_inclusive;
+    }
   }
 }

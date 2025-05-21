@@ -1,4 +1,5 @@
 import 'package:diyet/ui/views/diyet/diyet_intro_sayfa.dart';
+import 'package:diyet/ui/views/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -135,11 +136,11 @@ class AnaSayfaContent extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.account_circle, size: 40, color: Colors.black),
+                      icon: const Icon(Icons.power_settings_new_rounded, size: 32, color: Colors.black),
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => ProfilePage()),
+                          MaterialPageRoute(builder: (_) => Login()),
                         );
                       },
                     ),

@@ -11,12 +11,12 @@ class OgunDetaySayfa extends StatefulWidget {
   final int mealId;
   final Color? themeColor;
   const OgunDetaySayfa({Key? key, required this.mealId,this.themeColor,}) : super(key: key);
-
   @override
   State<OgunDetaySayfa> createState() => _OgunDetaySayfaState();
 }
 
 class _OgunDetaySayfaState extends State<OgunDetaySayfa> {
+
   int selectedIndex = 0;
   bool isFavorite = false;
 
@@ -25,7 +25,6 @@ class _OgunDetaySayfaState extends State<OgunDetaySayfa> {
     super.initState();
     _checkIfFavorite();
   }
-
   void _checkIfFavorite() async {
     final userId = context.read<LoginCubit>().state?.id ?? 0;
     final favorites = await context.read<FavoriSayfaCubit>().getFavorites(userId);
@@ -38,8 +37,7 @@ class _OgunDetaySayfaState extends State<OgunDetaySayfa> {
 
   @override
   Widget build(BuildContext context) {
-   // final Color color = themeColor ?? const Color(0xFF7C8C03); // varsayılan renk
-
+    final Color color = widget.themeColor ??  Color(0xFF7C8C03);
     return BlocProvider(
       create: (_) => OgunDetayCubit(DietRepository())..fetchMeal(widget.mealId),
       child: BlocBuilder<OgunDetayCubit, OgunDetayState>(

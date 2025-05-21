@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/entity/user_model.dart';
 import '../../data/repo/repository.dart';
 
@@ -18,5 +19,11 @@ class LoginCubit extends Cubit<UserModel?> {
     } catch (e) {
       emit(null);  // Hata durumunda null
     }
+  }
+
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear(); // 🔸 Token ve kullanıcı bilgilerini sil
+    emit(null); // 🔸 Cubit'i sıfırla
   }
 }

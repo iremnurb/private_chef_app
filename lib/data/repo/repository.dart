@@ -62,7 +62,7 @@ class UserRepository {
   }
 
 
-  Future<UserModel?> updateUser(UserModel user) async {
+  /*Future<UserModel?> updateUser(UserModel user) async {
     final url = Uri.parse('http://10.0.2.2:5002/api/users/${user.id}');
     try {
       final response = await http.put(
@@ -80,6 +80,25 @@ class UserRepository {
       }
     } catch (e) {
       print("Error during update: $e");
+      return null;
+    }
+  }*/
+
+  Future<UserModel?> updateUser(UserModel updatedUser) async {
+    try {
+      final response = await http.put(
+        Uri.parse('http://10.0.2.2:5002/api/users/${updatedUser.id}'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(updatedUser.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return UserModel.fromJson(data['user']);
+      }
+      return null;
+    } catch (e) {
+      print('Kullanıcı güncellenirken hata: $e');
       return null;
     }
   }
