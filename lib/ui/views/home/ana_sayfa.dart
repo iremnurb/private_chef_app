@@ -75,7 +75,7 @@ class AnaSayfaContent extends StatelessWidget {
 
     try {
       final response = await http.get(
-        Uri.parse('http://10.0.2.2:5002/api/diet-status?userId=${user.id!}'),
+        Uri.parse('http://10.0.2.2:5000/api/diet-status?userId=${user.id!}'),
       );
 
       if (response.statusCode == 200) {

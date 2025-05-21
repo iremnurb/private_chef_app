@@ -122,8 +122,6 @@ class RecipeListByCategoryPageState extends State<RecipeListByCategoryPage> {
                     ),
                   ),
                 );
-
-
               },
             ),
           ),

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../entity/diet_meal_model.dart';
 import '../entity/favorite_model.dart';
 import '../entity/meal_detail_model.dart';
 import '../entity/recipe_model.dart';
@@ -11,7 +10,7 @@ import 'package:diyet/data/entity/diyet_list_model.dart';
 class UserRepository {
   //************************SIGN UP******************************
   Future<String> signUp(UserModel user) async {
-    final url = Uri.parse('http://10.0.2.2:5002/api/users/signup');
+    final url = Uri.parse('http://10.0.2.2:5000/api/users/signup');
     try {
       print("Sending User Data: ${user.toJson()}");  // Eklenen kontrol
 
@@ -39,7 +38,7 @@ class UserRepository {
 
   //************************lOGIN******************************
   Future<UserModel?> login(String email, String password) async {
-    final url = Uri.parse('http://10.0.2.2:5002/api/users/login');
+    final url = Uri.parse('http://10.0.2.2:5000/api/users/login');
     try {
       final response = await http.post(
         url,
@@ -61,9 +60,25 @@ class UserRepository {
     }
   }
 
+  Future<String> resetPassword(String email, String newPassword) async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:5000/api/users/forgot-password'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"email": email, "newPassword": newPassword}),
+    );
+
+    if (response.statusCode == 200) {
+      return "Password reset successful";
+    } else {
+      final data = jsonDecode(response.body);
+      return data['message'] ?? "Unknown error";
+    }
+  }
+
+
 
   /*Future<UserModel?> updateUser(UserModel user) async {
-    final url = Uri.parse('http://10.0.2.2:5002/api/users/${user.id}');
+    final url = Uri.parse('http://10.0.2.2:5000/api/users/${user.id}');
     try {
       final response = await http.put(
         url,
@@ -113,7 +128,7 @@ class UserRepository {
     double? carbs,
     double? sugar,
   }) async {
-    final url = Uri.parse('http://10.0.2.2:5002/api/recipes/filter');
+    final url = Uri.parse('http://10.0.2.2:5000/api/recipes/filter');
 
     final body = {
       'ingredients': ingredients,
@@ -145,28 +160,38 @@ class UserRepository {
 
 
 //********TIME LIMIT MODE*****
-  Future<List<RecipeModel>> fetchRecipesByTimeLimit(int totalMinutes) async {
+  Future<List<RecipeModel>> fetchRecipesByTimes({
+    required int cookTime,
+    required int prepTime,
+    required int totalTime,
+    required List<String> includeIngredients,
+    required List<String> excludeIngredients,
+  }) async {
     final response = await http.post(
-      Uri.parse("http://10.0.2.2:5002/api/recipes/by-time-limit"),
+      Uri.parse('http://10.0.2.2:5000/api/recipes/filter-by-times-and-ingredients'),
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"maxMinutes": totalMinutes}),
+      body: jsonEncode({
+        "maxCookMinutes": cookTime,
+        "maxPrepMinutes": prepTime,
+        "maxTotalMinutes": totalTime,
+        "includeIngredients": includeIngredients, // henüz ingredient seçimi yok bu sayfada
+        "excludeIngredients": excludeIngredients,
+      }),
     );
-
-    print("status code: ${response.statusCode}");
-    print("response body: ${response.body}");
-
+    //print(jsonEncode(response));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return (data["recipes"] as List)
-          .map((e) => RecipeModel.fromJson(e))
-          .toList();
+      final List<dynamic> recipesJson = data["recipes"];
+      return recipesJson.map((e) => RecipeModel.fromJson(e)).toList();
     } else {
-      throw Exception("Failed to fetch recipes by time");
+      throw Exception("Failed to load recipes by time limits");
     }
   }
 }
+
+
 class DietRepository {
-  final String baseUrl = 'http://10.0.2.2:5002/api/diets'; // Android emulator için
+  final String baseUrl = 'http://10.0.2.2:5000/api/diets'; // Android emulator için
 
 
   Future<DietModel?> createDietPlan(DietModel dietPlan) async {
@@ -193,7 +218,7 @@ class DietRepository {
   }
 
   Future<bool> createDietList(int userId) async {
-    final url = Uri.parse('http://10.0.2.2:5002/api/diet-list');
+    final url = Uri.parse('http://10.0.2.2:5000/api/diet-list');
 
     try {
       final response = await http.post(
@@ -214,7 +239,7 @@ class DietRepository {
 
 
   Future<List<DietListDay>> fetchDietList(int userId) async {
-    final url = Uri.parse('http://10.0.2.2:5002/api/diet-list?userId=$userId'); //  PORT 5002
+    final url = Uri.parse('http://10.0.2.2:5000/api/diet-list?userId=$userId'); //  PORT 5000
 
     final response = await http.get(url); //  GET method
 
@@ -228,7 +253,7 @@ class DietRepository {
   }
 
   Future<MealDetail> fetchMealDetail(int mealId) async {
-    final url = Uri.parse('http://10.0.2.2:5002/api/meal-details?mealId=$mealId');
+    final url = Uri.parse('http://10.0.2.2:5000/api/meal-details?mealId=$mealId');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -241,7 +266,7 @@ class DietRepository {
 }
 
 class FavoriteRepository {
-  final String baseUrl = 'http://10.0.2.2:5002/api/favorites';
+  final String baseUrl = 'http://10.0.2.2:5000/api/favorites';
 
   Future<void> addFavorite(int userId, int recipeId) async {
     final response = await http.post(
