@@ -117,7 +117,7 @@ class _TimeInputPageState extends State<TimeInputPage> {
         GestureDetector(
           onTap: isReadOnly ? null : () => _showTimePicker(label, onSet),
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 32),
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
             decoration: BoxDecoration(
               color: color,
               borderRadius: BorderRadius.circular(12),
@@ -153,61 +153,37 @@ class _TimeInputPageState extends State<TimeInputPage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: RichText(
+          text: TextSpan(
+              text: 'Enter your time ',
+              style: GoogleFonts.poppins(fontSize: 27, fontWeight: FontWeight.bold,color: Colors.black87),
+              children: [
+                TextSpan(
+                  text: 'limits',
+                  style: GoogleFonts.poppins(fontSize: 27, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
+                ),
+              ]
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    width: 35,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black, width: 3),
-                    ),
-                    child: const Icon(Icons.arrow_back, color: Colors.black, size: 24, weight: 3),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            RichText(
-                text: TextSpan(
-                  text: 'Enter your time ',
-                    style: GoogleFonts.poppins(fontSize: 28, fontWeight: FontWeight.bold,color: Colors.black87),
-                  children: [
-                    TextSpan(
-                      text: 'limits',
-                       style: GoogleFonts.poppins(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFFD3A792)),
-                    ),
-                  ]
-                ),
-            ),
-
-
+            //const SizedBox(height: 30),
             //const Spacer(),
-            SizedBox(height: 70,),
-            Image.asset('assets/images/Clock.png'),
+            //SizedBox(height: 70,),
+            Image.asset('assets/images/Clock.png',),
             SizedBox(height: 40,),
-            Row(
-              children: [
-                SizedBox(width: 20,),
-                _buildTimeInput(Colors.grey.shade300,"Cook Time", _cookHours, _cookMinutes, (h, m) => setState(() {
-                  _cookHours = h;
-                  _cookMinutes = m;
-                }), "Time spent actively cooking (e.g. baking, frying, boiling)."),
-                SizedBox(width: 65,),
-                _buildTimeInput(Colors.grey.shade300,"Prep Time", _prepHours, _prepMinutes, (h, m) => setState(() {
-                  _prepHours = h;
-                  _prepMinutes = m;
-                }), "Time spent preparing ingredients (e.g. chopping, marinating)."),
-                const SizedBox(height: 40),
-              ],
-            ),
+            _buildTimeInput(Colors.grey.shade300,"Cook Time", _cookHours, _cookMinutes, (h, m) => setState(() {
+              _cookHours = h;
+              _cookMinutes = m;
+            }), "Time spent actively cooking (e.g. baking, frying, boiling)."),
+            SizedBox(height: 40,),
+            _buildTimeInput(Colors.grey.shade300,"Prep Time", _prepHours, _prepMinutes, (h, m) => setState(() {
+              _prepHours = h;
+              _prepMinutes = m;
+            }), "Time spent preparing ingredients (e.g. chopping, marinating)."),
             const SizedBox(height: 40),
             _buildTimeInput(Colors.blueGrey.shade300,"Total Time", totalH, totalM, (_, __) {},
               "Automatically calculated sum of cook and prep time.",

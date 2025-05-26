@@ -1,9 +1,6 @@
-
-
 import 'package:diyet/ui/views/recipe/time/time_input_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'fridge/fridge.dart';
 
 
@@ -13,35 +10,22 @@ class RecipeModeAnaSayfa extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Welcome to Recipe Mode"),
+        titleTextStyle: GoogleFonts.poppins(fontSize: 23,color: Colors.black,fontWeight: FontWeight.bold),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          padding: const EdgeInsets.only(bottom: 0,top: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start, // Butonları sola hizalamak için
             children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.black, width: 3), // Dış çerçeve rengi
-                      ),
-                      child: const Icon(Icons.arrow_back, color: Colors.black, size: 24, weight: 2),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 40),
-
+              const SizedBox(height: 20),
               RichText(
+                textAlign: TextAlign.left,
                 text:  TextSpan(
-                  text: "   Discover the Recipe Mode: Get personalized recipe\n suggestions based on ",
+                  text: " Discover the Recipe Mode: Get personalized recipe\n suggestions based on ",
                   style: GoogleFonts.poppins(fontSize: 15, color: Colors.grey),
                   children: [
                     TextSpan(

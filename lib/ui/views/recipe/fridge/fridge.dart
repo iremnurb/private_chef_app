@@ -158,10 +158,35 @@ class _DolabimdaNeVarState extends State<DolabimdaNeVar> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Stack(
+          alignment: Alignment.centerLeft,
+          children: [
+            Opacity(
+              opacity: 0.9,
+              child: Image.asset('assets/images/Rectangle.png',fit: BoxFit.fitHeight,),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 35.0),
+                  child: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back)),
+                ),
+                const Text(
+                  '   What is in your fridge today?',
+                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+              ],
+            ),
+          ],
+        ),
+        toolbarHeight: 150,
+        automaticallyImplyLeading: false,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(),
           _buildInfoMessage(),
           Expanded(
             child: Padding(
@@ -266,29 +291,10 @@ class _DolabimdaNeVarState extends State<DolabimdaNeVar> {
     );
   }
 
-  Widget _buildHeader() {
-    return Stack(
-      alignment: Alignment.centerLeft,
-      children: [
-        Opacity(
-          opacity: 1,
-          child: Image.asset('assets/images/Rectangle.png'),
-        ),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            'What is in your fridge today?',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ),
-      ],
-    );
-  }
-
 
   Widget _buildInfoMessage() {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.only(left: 8,right: 8,bottom: 8),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.yellow.shade100,

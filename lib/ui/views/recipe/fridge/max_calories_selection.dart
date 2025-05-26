@@ -54,18 +54,19 @@ class _MaxCaloriesSelectionPageState extends State<MaxCaloriesSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title:  Text("Max Calories",style: GoogleFonts.poppins(),),
-        backgroundColor: const Color(0xFFBF7E04),
+
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.only(bottom: 15,left: 20,right: 20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+             SizedBox(height: 20,),
              Text(
               "Set your maximum calorie limit:",
-              style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600),
+              style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),
+               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
             Row(
@@ -83,7 +84,7 @@ class _MaxCaloriesSelectionPageState extends State<MaxCaloriesSelectionPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 30),
+            const Spacer(),
             Center(
               child: Text(
                 "${_calories.toInt()} cal",
@@ -135,7 +136,7 @@ class _MaxCaloriesSelectionPageState extends State<MaxCaloriesSelectionPage> {
             const SizedBox(height: 10),
             TextButton(
               onPressed: () => _submit(isSkip: true),
-              child:  Text("Skip", style: GoogleFonts.poppins(color: Colors.grey)),
+              child:  Align(child: Text("Skip", style: GoogleFonts.poppins(color: Colors.grey))),
             ),
           ],
         ),

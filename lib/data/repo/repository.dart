@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../../ui/cubit/ingredient_bag_cubit.dart';
 import '../entity/favorite_model.dart';
+import '../entity/ingredient_model.dart';
 import '../entity/meal_detail_model.dart';
 import '../entity/recipe_model.dart';
 import '../entity/user_model.dart';
@@ -38,7 +40,7 @@ class UserRepository {
 
   //************************lOGIN******************************
   Future<UserModel?> login(String email, String password) async {
-    final url = Uri.parse('http://10.0.2.2:5000/api/users/login');
+    final url = Uri.parse('http://192.168.1.37:5000/api/users/login');
     try {
       final response = await http.post(
         url,
@@ -102,7 +104,7 @@ class UserRepository {
   Future<UserModel?> updateUser(UserModel updatedUser) async {
     try {
       final response = await http.put(
-        Uri.parse('http://10.0.2.2:5002/api/users/${updatedUser.id}'),
+        Uri.parse('http://10.0.2.2:5000/api/users/${updatedUser.id}'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(updatedUser.toJson()),
       );
@@ -187,6 +189,65 @@ class UserRepository {
       throw Exception("Failed to load recipes by time limits");
     }
   }
+
+
+  //*******************INGREDIENTS BAG ISLEMLERI*************************************
+  final String baseUrl = "http://10.0.2.2:5000/api";
+
+  Future<List<IngredientItem>> fetchbag(int userId) async {
+    final response = await http.get(Uri.parse('$baseUrl/ingredient-bag/$userId'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((item) => IngredientItem.fromJson(item)).toList();
+    } else {
+      throw Exception('Failed to load ingredients');
+    }
+  }
+
+  Future<void> addToBag(int userId, String ingredient) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/ingredient-bag'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'userId': userId,
+        'ingredient': ingredient,
+      }),
+    );
+
+    if (response.statusCode != 201) {
+      throw Exception('Failed to add ingredient');
+    }
+  }
+
+  Future<void> deleteFromBag(int userId, String ingredient) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/ingredient-bag/'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'userId': userId,
+        'ingredient': ingredient,
+      }),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete ingredient');
+    }
+  }
+
+  Future<void> markAsAcquired(int userId, String ingredient) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/ingredient-bag/acquire'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'userId': userId,
+        'ingredient': ingredient,
+      }),
+    );
+    if (response.statusCode != 200) {
+      throw Exception("Failed to mark as acquired");
+    }
+  }
+
 }
 
 
