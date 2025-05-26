@@ -39,13 +39,13 @@ class _MealTypeSelectionPageState extends State<MealTypeSelectionPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFBF7E04),
-        title:  Text("Select Meal Type",style: GoogleFonts.poppins(),),
+
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(bottom: 15,left: 20,right: 20),
         child: Column(
           children: [
+            SizedBox(height: 20,),
             Text(
               "What type of meal are you looking for?",
               style: GoogleFonts.poppins(

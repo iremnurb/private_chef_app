@@ -1,5 +1,7 @@
 import 'package:diyet/ui/cubit/diyet_listem_sayfa_cubit.dart';
 import 'package:diyet/ui/cubit/favori_sayfa_cubit.dart';
+import 'package:diyet/ui/cubit/forgot_password_cubit.dart';
+import 'package:diyet/ui/cubit/ingredient_bag_cubit.dart';
 import 'package:diyet/ui/cubit/recipe_cubit.dart';
 import 'package:diyet/ui/views/diyet/ogun_detay_sayfa.dart';
 import 'package:diyet/ui/views/home/ana_sayfa.dart';
@@ -54,6 +56,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => ProfileCubit(UserRepository())),
         BlocProvider(create: (_) => FavoriSayfaCubit(FavoriteRepository())),
         BlocProvider(create: (_) => RecipeCubit(UserRepository())),
+        BlocProvider(create: (_) => ForgotPasswordCubit(UserRepository())),
+        BlocProvider(create: (_) => IngredientBagCubit(UserRepository())),
 
 
       ],

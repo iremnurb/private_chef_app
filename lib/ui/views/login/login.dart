@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../data/repo/repository.dart';
+import '../../cubit/forgot_password_cubit.dart';
 import '../../cubit/login_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../cubit/profile_cubit.dart';
+import 'forgot_password.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -123,7 +125,15 @@ class _LoginState extends State<Login> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => BlocProvider(
+                            create: (_) => ForgotPasswordCubit(UserRepository()),
+                            child: const ForgotPasswordPage(),
+                          )),
+                        );
+                      },
                       child: Text(
                         "Forgot Password?",
                         style: GoogleFonts.poppins(color: Colors.grey, fontSize: 14),

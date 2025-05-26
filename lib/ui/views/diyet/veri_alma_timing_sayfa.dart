@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:diyet/data/services/notification_service.dart';
 import 'package:diyet/data/entity/diyet_list_model.dart';
 
+import '../../widgets/generic_loading_screen.dart';
+
 class VeriAlmaTimingSayfa extends StatefulWidget {
   @override
   _VeriAlmaTimingSayfaState createState() => _VeriAlmaTimingSayfaState();
@@ -256,43 +258,31 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: _isLoading ? buildLoadingScreen() : buildMainScreen(),
+      appBar: AppBar(),
+      body: _isLoading
+          ? Center(child: GenericLoadingScreen(progress: _progress))
+          : buildMainScreen(),
     );
   }
 
   Widget buildMainScreen() {
     return Column(
       children: [
-        const SizedBox(height: 40),
-        Align(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.black, width: 5),
+        //const SizedBox(height: 40),
+        const SizedBox(height: 30),
+        Padding(
+          padding: const EdgeInsets.only(left: 24,right: 16),
+          child: RichText(
+            text:  TextSpan(
+              text: "Enter your ",
+              style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
+              children: [
+                TextSpan(
+                  text: "meal times",
+                  style: GoogleFonts.poppins(color: Color(0xFFD0A890)),
                 ),
-                child: const Icon(Icons.arrow_back, color: Colors.black, size: 32, weight: 5),
-              ),
+              ],
             ),
-          ),
-        ),
-        const SizedBox(height: 60),
-        RichText(
-          text:  TextSpan(
-            text: "Enter your ",
-            style: GoogleFonts.poppins(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black87),
-            children: [
-              TextSpan(
-                text: "meal times",
-                style: GoogleFonts.poppins(color: Color(0xFFD0A890)),
-              ),
-            ],
           ),
         ),
         const SizedBox(height: 50),
@@ -319,35 +309,6 @@ class _VeriAlmaTimingSayfaState extends State<VeriAlmaTimingSayfa> {
           ),
         ),
         const SizedBox(height: 40),
-      ],
-    );
-  }
-
-  Widget buildLoadingScreen() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset('assets/images/salad.png', width: 120, height: 120),
-        const SizedBox(height: 30),
-        Text('Preparing your recipes', style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 20),
-        Text(
-          '  Setting up your nutrition plan and  \n analyzing your goals...',
-          style: GoogleFonts.poppins(fontSize: 16, color: Colors.grey),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0),
-          child: LinearProgressIndicator(
-            value: _progress,
-            backgroundColor: Colors.grey.shade300,
-            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFABD904)),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text('${(_progress * 100).toInt()}%',
-            style:  GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFABD904))),
       ],
     );
   }

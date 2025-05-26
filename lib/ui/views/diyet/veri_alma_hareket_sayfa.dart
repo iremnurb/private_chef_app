@@ -15,33 +15,12 @@ class _VeriAlmaHareketSayfaState extends State<VeriAlmaHareketSayfa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 30),
-
-              /// **Geri Butonu**
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.black, width: 5),
-                      ),
-                      child: const Icon(Icons.arrow_back, color: Colors.black, size: 28, weight: 5),
-                    ),
-                  ),
-                ),
-              ),
-
               const SizedBox(height: 30),
 
               /// **Başlık**

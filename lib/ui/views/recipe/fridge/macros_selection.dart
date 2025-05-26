@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:diyet/ui/views/recipe/recipe_results_page.dart';
 
 import '../../../cubit/recipe_cubit.dart';
+import '../../../widgets/generic_loading_screen.dart';
 
 class MacrosSelectionPage extends StatefulWidget {
   final List<String> selectedIngredients;
@@ -28,9 +31,26 @@ class _MacrosSelectionPageState extends State<MacrosSelectionPage> {
   final TextEditingController _sugarController = TextEditingController();
 
   bool _isLoading = false;
+  double _progress = 0.0;
+  Timer? _timer;
+
 
   void _submit() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _progress = 0.0;
+    });
+
+    // Start fake progress animation
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      setState(() {
+        _progress += 0.05;
+        if (_progress >= 1.0) {
+          _progress = 1.0;
+          timer.cancel();
+        }
+      });
+    });
 
     final fat = double.tryParse(_fatController.text);
     final protein = double.tryParse(_proteinController.text);
@@ -38,6 +58,8 @@ class _MacrosSelectionPageState extends State<MacrosSelectionPage> {
     final sugar = double.tryParse(_sugarController.text);
 
     final cubit = context.read<RecipeCubit>();
+
+
     await cubit.fetchRecipesWithAdvancedFilter(
       ingredients: widget.selectedIngredients,
       mealType: widget.selectedMealTypes,
@@ -47,6 +69,12 @@ class _MacrosSelectionPageState extends State<MacrosSelectionPage> {
       carbs: carbs,
       sugar: sugar,
     );
+
+    // Bekleme bittiğinde progress 1.0 olduysa direkt devam et
+    while (_progress < 1.0) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+
 
     final recipes = cubit.state.recipes;
 
@@ -63,22 +91,31 @@ class _MacrosSelectionPageState extends State<MacrosSelectionPage> {
       );
     }
 
+    _timer?.cancel();
     setState(() => _isLoading = false);
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text("Macros",style: GoogleFonts.poppins(),),
-        backgroundColor: const Color(0xFFBF7E04),
+
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Column(
+      body: _isLoading
+          ? Center(
+        child: GenericLoadingScreen(
+          progress: _progress,
+          title: "Fetching Recipes",
+          subtitle: "Analyzing your selected ingredients and finding the best matches...",
+          imageAssetPath: "assets/images/salad.png",
+        ),
+      )
+          : Padding(
+        padding: const EdgeInsets.only(bottom: 15, left: 20, right: 20),
+        child: Column(
           children: [
+            SizedBox(height: 20,),
              Text(
               "You can optionally enter macro values (g):",
               style: GoogleFonts.poppins(
@@ -87,10 +124,13 @@ class _MacrosSelectionPageState extends State<MacrosSelectionPage> {
               ),
                textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             _buildMacroField("Enter fat value(g)", _fatController),
+            SizedBox(height: 5,),
             _buildMacroField("Enter protein value(g)", _proteinController),
+            SizedBox(height: 5,),
             _buildMacroField("Enter carbohydrates value(g)", _carbsController),
+            SizedBox(height: 5,),
             _buildMacroField("Enter sugar value(g)", _sugarController),
             const Spacer(),
             Row(
@@ -122,8 +162,7 @@ class _MacrosSelectionPageState extends State<MacrosSelectionPage> {
   }
 
   Widget _buildMacroField(String label, TextEditingController controller) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+    return Expanded(
       child: TextField(
         controller: controller,
         keyboardType: TextInputType.number,

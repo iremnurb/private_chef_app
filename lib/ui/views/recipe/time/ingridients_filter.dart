@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../cubit/recipe_cubit.dart';
+import '../../../widgets/generic_loading_screen.dart';
 import '../recipe_results_page.dart';
 
 
@@ -29,6 +31,9 @@ class _IngredientFilterPageState extends State<IngredientFilterPage> {
   final Set<String> excludeIngredients = {};
   bool _isLoading = false;
   bool _isIngredientsLoaded = false;
+
+  double _progress = 0.0;
+  Timer? _timer;
 
   final Map<String, String> categoryIcons = {
     "Vegetables": "vegetables.png",
@@ -170,7 +175,22 @@ class _IngredientFilterPageState extends State<IngredientFilterPage> {
   }
 
   void _startSearch() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _progress = 0.0;
+    });
+
+    // Başlat: %0'dan %100'e yükleme animasyonu
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      setState(() {
+        _progress += 0.05;
+        if (_progress >= 1.0) {
+          _progress = 1.0;
+          timer.cancel();
+        }
+      });
+    });
+
 
     final cubit = context.read<RecipeCubit>();
     await cubit.fetchRecipesByTimesWithIngredients(
@@ -180,6 +200,10 @@ class _IngredientFilterPageState extends State<IngredientFilterPage> {
       includeIngredients: includeIngredients.toList(),
       excludeIngredients: excludeIngredients.toList(),
     );
+
+    while (_progress < 1.0) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
 
     final state = cubit.state;
       Navigator.pushReplacement(
@@ -194,6 +218,9 @@ class _IngredientFilterPageState extends State<IngredientFilterPage> {
           ),
         ),
       );
+
+    _timer?.cancel();
+    setState(() => _isLoading = false);
   }
 
   Widget _buildCategoryButton(String category) {
@@ -329,10 +356,20 @@ class _IngredientFilterPageState extends State<IngredientFilterPage> {
       ),
 
       body: !_isIngredientsLoaded
-          ? const Center(child: CircularProgressIndicator())
+          ? const SizedBox() // veya Center(child: Text("Loading..."))
           : (_isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+        child: GenericLoadingScreen(
+          progress: _progress,
+          title: "Finding Recipes",
+          subtitle: "We find recipes that are suitable for you according to the time criteria you enter....",
+          imageAssetPath: "assets/images/salad.png",
+        ),
+      )
           : _buildContent()),
+
+
+
     );
   }
 }

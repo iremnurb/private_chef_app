@@ -1,4 +1,5 @@
 import 'package:diyet/ui/views/diyet/diyet_intro_sayfa.dart';
+import 'package:diyet/ui/views/ingredient_bag_page.dart';
 import 'package:diyet/ui/views/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../../data/entity/user_model.dart';
 import '../../cubit/login_cubit.dart';
+import '../../widgets/animated_mode_button.dart';
 import '../diyet/diyet_listem_sayfa.dart';
 import '../diyet/veri_alma_kilo_sayfa.dart';
 import '../recipe/recipe_mode_ana_sayfa.dart';
@@ -21,11 +23,12 @@ class AnaSayfa extends StatefulWidget {
 }
 
 class _AnaSayfaState extends State<AnaSayfa> {
-  int _currentIndex = 1; // Başlangıçta Ana Sayfa seçili
+  int _currentIndex = 0; // Başlangıçta Ana Sayfa seçili
 
   final List<Widget> _pages = [
-    const FavoriSayfa(),
     const AnaSayfaContent(),
+    const FavoriSayfa(),
+    const IngredientBagPage(),
     const ProfilePage(),
   ];
 
@@ -33,35 +36,73 @@ class _AnaSayfaState extends State<AnaSayfa> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        iconSize: 25,
-        backgroundColor: Colors.white70,
-        unselectedFontSize: 12,
-        selectedFontSize: 14,
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey.shade500,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: "Favorites",
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home Page",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile",
-          ),
-        ],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          iconSize: 25,
+          backgroundColor: Colors.transparent,
+          unselectedFontSize: 0, // Remove labels
+          selectedFontSize: 0, // Remove labels
+          currentIndex: _currentIndex,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey.shade500,
+          elevation: 0,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: "",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_border_outlined),
+              label: "",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag_outlined),
+              label: "",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline),
+              label: "",
+            ),
+          ],
+        ),
       ),
+      // Add the Floating Action Button
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>  RecipeModeAnaSayfa()),
+          );
+        },
+        backgroundColor: Colors.black87,
+        child: const Icon(
+          Icons.local_dining, // Using a similar icon to the "Chef Hat"
+          color: Colors.white,
+          size: 30,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
@@ -160,7 +201,7 @@ class AnaSayfaContent extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: RichText(
                   text:  TextSpan(
-                    text: "   Track your ",
+                    text: "Track your ",
                     style: GoogleFonts.poppins(fontSize: 16, color: Colors.grey),
                     children: [
                       TextSpan(
@@ -182,36 +223,33 @@ class AnaSayfaContent extends StatelessWidget {
               const SizedBox(height: 30),
               SizedBox(
                 height: 400,
-                child: Stack(
+                child:Stack(
                   children: [
                     Positioned(
-                      left: -40,
+                      left: -30,
                       top: 60,
-                      child: _buildModeButton(
-                        context,
-                        "Recipe Mode",
-                        buttonWidth,
-                        const Color(0xFFF2B33D),
-                            () => Navigator.push(
+                      child: AnimatedModeButton(
+                        text: "Recipe \n Mode",
+                        color: const Color(0xFFF2B33D),
+                        onTap: () => Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => RecipeModeAnaSayfa()),
+                          MaterialPageRoute(builder: (_) =>  RecipeModeAnaSayfa()),
                         ),
                       ),
                     ),
                     Positioned(
-                      right: -30,
+                      right: -28,
                       top: 200,
-                      child: _buildModeButton(
-                        context,
-                        "Diet Mode",
-                        buttonWidth,
-                        const Color(0xFFABD904),
-                            () => _handleDietMode(context),
+                      child: AnimatedModeButton(
+                        text: "Diet \n Mode",
+                        color: const Color(0xFFABD904),
+                        onTap: () => _handleDietMode(context),
                       ),
                     ),
                   ],
-                ),
+                )
               ),
+
             ],
           ),
         );

@@ -1,3 +1,4 @@
+
 import 'package:diyet/data/entity/recipe_model.dart';
 import 'package:diyet/ui/views/recipe/recipe_list_by_category_page.dart';
 import 'package:flutter/material.dart';
@@ -44,118 +45,103 @@ class _RecipeResultsPageState extends State<RecipeResultsPage> {
     'Dessert': 'Dessert.png',
   };
 
-  bool _isLoading = true;
 
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final grouped = _groupByMealType(widget.recipes);
     final totalRecipes = widget.recipes.length;
-    final ingredientList = widget.selectedIngredients.take(totalRecipes).join(", ");
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title:  Text("Recipe Results", style: GoogleFonts.poppins(),),
-        backgroundColor: const Color(0xFFBF7E04),
+        title: Text("Recipes"),
+        titleTextStyle: GoogleFonts.poppins(fontSize: 25,color: Colors.black, fontWeight: FontWeight.bold),
+        centerTitle: true,
+        backgroundColor: Colors.white,
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: Color(0xFFBF7E04)))
-          : widget.recipes.isEmpty
-
+      body: widget.recipes.isEmpty
           ? const Center(child: Text("No recipes found for the given filters."))
-          : ListView(
-        padding: const EdgeInsets.all(16.0),
+          : Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildDynamicHeader(),
-          const SizedBox(height: 24),
-          ...grouped.entries.map((entry) {
-            final mealType = entry.key;
-            final list = entry.value;
-            final iconPath = 'assets/images/${mealIcons[mealType] ?? "default.png"}';
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: _buildDynamicHeader(totalRecipes),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: grouped.length,
+              itemBuilder: (context, index) {
+                final mealType = grouped.keys.elementAt(index);
+                final list = grouped[mealType]!;
+                final iconPath = 'assets/images/${mealIcons[mealType] ?? "default.png"}';
 
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => RecipeListByCategoryPage(
-                      title: mealType,
-                      recipes: list,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => RecipeListByCategoryPage(
+                          title: mealType,
+                          recipes: list,
+                          sourcePage: widget.sourcePage,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF4F4F4),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 6,
+                          offset: Offset(0, 2),
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Image.asset(iconPath, width: 50, height: 50),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                mealType,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "${list.length} recipes available",
+                                style: GoogleFonts.poppins(color: Colors.grey[700]),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(Icons.arrow_forward_ios, size: 16)
+                      ],
                     ),
                   ),
                 );
               },
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                elevation: 6,
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                color: const Color(0xFFF4F4F4),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        iconPath,
-                        height: 50,
-                        width: 50,
-                        errorBuilder: (_, __, ___) => const Icon(Icons.fastfood),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              mealType,
-                              style: GoogleFonts.poppins(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              "${list.length} recipes available",
-                              style: GoogleFonts.poppins(color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Icon(Icons.arrow_forward_ios, size: 16),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Map<String, List<RecipeModel>> _groupByMealType(List<RecipeModel> recipes) {
-    final grouped = <String, List<RecipeModel>>{};
-    for (var recipe in recipes) {
-      final mealType = recipe.mealType?.trim() ?? "Unknown";
-      grouped.putIfAbsent(mealType, () => []).add(recipe);
-    }
-    return grouped;
-  }
-
-  Widget _buildDynamicHeader() {
+  Widget _buildDynamicHeader(int totalRecipes) {
     if (widget.sourcePage == "time_limits") {
       final includes = widget.includeIngredients ?? [];
       final excludes = widget.excludeIngredients ?? [];
@@ -180,7 +166,6 @@ class _RecipeResultsPageState extends State<RecipeResultsPage> {
         )));
       }
 
-      // Son virgülü temizle
       if (spanList.isNotEmpty && spanList.last.text!.endsWith(', ')) {
         spanList[spanList.length - 1] = TextSpan(
           text: spanList.last.text!.replaceAll(RegExp(r',\s*$'), ''),
@@ -189,33 +174,38 @@ class _RecipeResultsPageState extends State<RecipeResultsPage> {
       }
 
       return RichText(
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.left,
         text: TextSpan(
-          style: GoogleFonts.poppins(fontSize: 18, color: Colors.black),
+          style: GoogleFonts.poppins(fontSize: 16, color: Colors.black),
           children: spanList,
         ),
       );
     } else {
-      final totalRecipes = widget.recipes.length;
       final ingredientList = widget.selectedIngredients.take(totalRecipes).toList();
       return Text.rich(
         TextSpan(
           text: "We have $totalRecipes recipes for you with ",
-          style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
+          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600),
           children: [
             for (int i = 0; i < ingredientList.length; i++) ...[
               TextSpan(
                 text: ingredientList[i],
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
               ),
               if (i < ingredientList.length - 1) const TextSpan(text: ", "),
             ]
           ],
         ),
-        textAlign: TextAlign.center,
       );
     }
   }
 
-
+  Map<String, List<RecipeModel>> _groupByMealType(List<RecipeModel> recipes) {
+    final grouped = <String, List<RecipeModel>>{};
+    for (var recipe in recipes) {
+      final mealType = recipe.mealType.trim() ?? "Unknown";
+      grouped.putIfAbsent(mealType, () => []).add(recipe);
+    }
+    return grouped;
+  }
 }
